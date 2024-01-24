@@ -1,40 +1,29 @@
 import styles from './Game.module.css'
 import { useRef, useEffect, useState } from 'react'
 import useMousePosition from '../../hooks/useMousePosition.js'
+import Magnifier from '../Magnifier/Magnifier'
 
 const Game = () => {
-  const [size, setSize] = useState()
-  const imgRef = useRef(null)
+  // const [size, setSize] = useState({ width: 0, height: 0 })
+  // const imgRef = useRef(null)
 
-  const { x, y } = useMousePosition()
+  // useEffect(() => {
+  //   const getSize = () => {
+  //     let width = imgRef.current.offsetWidth * 2
+  //     let height = imgRef.current.offsetHeight * 2
+  //     return { width, height }
+  //   }
+  //   setSize(getSize())
+  // }, [imgRef])
 
-  function handleMouseMove(event) {}
-
-  useEffect(() => {
-    const getSize = () => {
-      let width = imgRef.current.offsetWidth * 2
-      let height = imgRef.current.offsetHeight * 2
-      return `${width}px ${height}px`
-    }
-    setSize(getSize())
-  }, [imgRef])
-
+  // const { width, height } = size
   return (
     <>
-      <div className={styles.imgContainer}></div>
-      <ZoomOverlay size={size} />
-      <img ref={imgRef} src='elcap.jpg' onMouseMove={handleMouseMove}></img>
+      <div className={styles.imgContainer}>
+        <Magnifier src='elcap.jpg' />
+        {/* <img ref={imgRef} src='elcap.jpg' onMouseMove={handleMouseMove}></img> */}
+      </div>
     </>
-  )
-}
-
-const ZoomOverlay = (size, handleMouseMove) => {
-  return (
-    <div
-      onMouseMove={handleMouseMove}
-      className={styles.zoomOverlay}
-      style={{ backgroundSize: size }}
-    ></div>
   )
 }
 
