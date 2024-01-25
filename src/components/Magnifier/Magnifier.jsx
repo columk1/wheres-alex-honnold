@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
-const Magnifier = ({ src, width = '100%', magnifierWidth = 200, zoomLevel = 2 }) => {
-  const [[x, y], setXY] = useState([0, 0])
+// Todo: Zoom level may need to be a function of image size
+const Magnifier = ({ src, width = '', magnifierWidth = 200, zoomLevel = 2 }) => {
+  const [[x, y], setXY] = useState([0, 0]) // cursor position in the image
   const [[imgWidth, imgHeight], setSize] = useState([0, 0])
   const [showMagnifier, setShowMagnifier] = useState(false)
 
@@ -9,12 +10,11 @@ const Magnifier = ({ src, width = '100%', magnifierWidth = 200, zoomLevel = 2 })
     <div
       style={{
         position: 'relative',
-        maxWidth: width,
       }}
     >
       <img
         src={src}
-        style={{ width: width }}
+        style={{ width, cursor: 'crosshair' }}
         onMouseEnter={(e) => {
           const { width, height } = e.currentTarget.getBoundingClientRect()
           setSize([width, height])
