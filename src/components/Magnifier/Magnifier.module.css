@@ -3,6 +3,7 @@
   max-width: 90vw;
   max-height: 90vh;
   overflow: hidden;
+  user-select: none;
 
   /* overflow-x: scroll; */
   /* & img {

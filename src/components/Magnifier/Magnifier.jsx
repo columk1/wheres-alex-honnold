@@ -6,7 +6,17 @@ const Magnifier = ({ src, width = '', magnifierWidth = 200, zoomLevel = 2 }) => 
   const [[x, y], setXY] = useState([0, 0]) // cursor position in the image
   const [[imgWidth, imgHeight], setSize] = useState([0, 0])
   const [showMagnifier, setShowMagnifier] = useState(false)
+  const [isMouseDown, setIsMouseDown] = useState(false)
+  const [isMouseOut, setIsMouseOut] = useState(false)
+  const [wasDragged, setWasDragged] = useState(false)
   const imageContainer = useRef(null)
+
+  // let isMouseDown = false
+  // let isMouseOut = false
+  // let wasDragged = false
+
+  // const [dragStart, setDragStart] = { x: 0, y: 0 }
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
 
   useEffect(() => {
     const container = imageContainer.current
@@ -16,7 +26,7 @@ const Magnifier = ({ src, width = '', magnifierWidth = 200, zoomLevel = 2 }) => 
       const offsetY = img.clientWidth - container.clientWidth / 2
       container.scrollTo(offsetX, offsetY)
     }
-  })
+  }, [])
 
   return (
     <div
@@ -36,7 +46,26 @@ const Magnifier = ({ src, width = '', magnifierWidth = 200, zoomLevel = 2 }) => 
           setSize([width, height])
           setShowMagnifier(true)
         }}
+        onMouseDown={(e) => {
+          setIsMouseDown(true)
+          setIsMouseOut(false)
+          setWasDragged(false)
+          // dragStart.x = imageContainer.current.scrollLeft + e.clientX
+          // dragStart.y = imageContainer.current.scrollTop + e.clientY
+          setDragStart({
+            x: imageContainer.current.scrollLeft + e.clientX,
+            y: imageContainer.current.scrollTop + e.clientY,
+          })
+          // setDragStart({ x: x, y: y })
+        }}
+        onMouseUp={() => {
+          setIsMouseDown(false)
+        }}
         onMouseMove={(e) => {
+          if (isMouseDown && !isMouseOut) {
+            imageContainer.current.scrollTo(dragStart.x - e.clientX, dragStart.y - e.clientY)
+            setWasDragged(true)
+          }
           // Get coords of top left of image
           const { top, left } = e.currentTarget.getBoundingClientRect()
           // Calculate cursor position in the image
@@ -44,8 +73,13 @@ const Magnifier = ({ src, width = '', magnifierWidth = 200, zoomLevel = 2 }) => 
           const y = e.pageY - top - window.scrollY
           setXY([x, y])
         }}
-        onMouseLeave={() => setShowMagnifier(false)}
+        onMouseLeave={() => {
+          setShowMagnifier(false)
+          setIsMouseOut(true)
+          setIsMouseDown(false)
+        }}
         alt={'img'}
+        draggable={false}
       />
 
       <div
