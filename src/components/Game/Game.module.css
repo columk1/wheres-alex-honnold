@@ -1,14 +1,3 @@
-.imgContainer {
-  max-width: 100%;
-  /* min-width: 720px; */
-
-  /* overflow-x: scroll; */
-  /* & img {
-    width: 100%;
-    object-fit: contain;
-  } */
-}
-
 /* .zoomOverlay {
   position: absolute;
   border: 3px solid #000;

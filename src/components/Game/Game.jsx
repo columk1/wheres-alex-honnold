@@ -19,10 +19,8 @@ const Game = () => {
   // const { width, height } = size
   return (
     <>
-      <div className={styles.imgContainer}>
-        <Magnifier src='elcap.jpg' />
-        {/* <img ref={imgRef} src='elcap.jpg' onMouseMove={handleMouseMove}></img> */}
-      </div>
+      <Magnifier src='elcap.jpg' />
+      {/* <img ref={imgRef} src='elcap.jpg' onMouseMove={handleMouseMove}></img> */}
     </>
   )
 }

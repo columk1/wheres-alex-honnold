@@ -1,0 +1,12 @@
+.imgContainer {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: hidden;
+
+  /* overflow-x: scroll; */
+  /* & img {
+    width: 100%;
+    object-fit: contain;
+  } */
+}

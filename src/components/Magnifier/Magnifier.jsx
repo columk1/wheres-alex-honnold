@@ -1,15 +1,31 @@
-import { useState, useEffect } from 'react'
+import styles from './Magnifier.module.css'
+import { useState, useEffect, useRef } from 'react'
 
 // Todo: Zoom level may need to be a function of image size
 const Magnifier = ({ src, width = '', magnifierWidth = 200, zoomLevel = 2 }) => {
   const [[x, y], setXY] = useState([0, 0]) // cursor position in the image
   const [[imgWidth, imgHeight], setSize] = useState([0, 0])
   const [showMagnifier, setShowMagnifier] = useState(false)
+  const imageContainer = useRef(null)
+
+  useEffect(() => {
+    const container = imageContainer.current
+    const img = container.firstChild
+    if (container && img) {
+      const offsetX = img.clientHeight / 2 - container.clientHeight / 2
+      const offsetY = img.clientWidth - container.clientWidth / 2
+      container.scrollTo(offsetX, offsetY)
+    }
+  })
 
   return (
     <div
+      className={styles.imgContainer}
+      ref={imageContainer}
       style={{
         position: 'relative',
+        maxWidth: '90vw',
+        overflow: 'hidden',
       }}
     >
       <img
