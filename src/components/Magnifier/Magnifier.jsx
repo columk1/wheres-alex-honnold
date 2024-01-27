@@ -1,5 +1,5 @@
 import styles from './Magnifier.module.css'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useLayoutEffect } from 'react'
 
 // Todo: Zoom level may need to be a function of image size
 const Magnifier = ({ src, width = '', magnifierWidth = 200, zoomLevel = 2 }) => {
@@ -9,6 +9,7 @@ const Magnifier = ({ src, width = '', magnifierWidth = 200, zoomLevel = 2 }) => 
   const [isMouseDown, setIsMouseDown] = useState(false)
   const [isMouseOut, setIsMouseOut] = useState(false)
   const [wasDragged, setWasDragged] = useState(false)
+  const [loading, setLoading] = useState(true)
   const imageContainer = useRef(null)
 
   // let isMouseDown = false
@@ -18,15 +19,15 @@ const Magnifier = ({ src, width = '', magnifierWidth = 200, zoomLevel = 2 }) => 
   // const [dragStart, setDragStart] = { x: 0, y: 0 }
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const container = imageContainer.current
     const img = container.firstChild
-    if (container && img) {
+    if (!loading) {
       const offsetX = img.clientHeight / 2 - container.clientHeight / 2
       const offsetY = img.clientWidth - container.clientWidth / 2
       container.scrollTo(offsetX, offsetY)
     }
-  }, [])
+  }, [loading])
 
   return (
     <div
@@ -34,13 +35,14 @@ const Magnifier = ({ src, width = '', magnifierWidth = 200, zoomLevel = 2 }) => 
       ref={imageContainer}
       style={{
         position: 'relative',
-        maxWidth: '90vw',
+        width: '90vw',
         overflow: 'hidden',
       }}
     >
       <img
         src={src}
         style={{ width, cursor: 'crosshair' }}
+        onLoad={() => setLoading(false)}
         onMouseEnter={(e) => {
           const { width, height } = e.currentTarget.getBoundingClientRect()
           setSize([width, height])
