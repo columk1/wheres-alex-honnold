@@ -1,9 +1,10 @@
 .popover {
   position: absolute;
   min-width: 200px;
-  min-height: 200px;
+  /* min-height: 200px; */
   padding: 1rem;
   background-color: white;
+  border-radius: 0.25rem;
   transform: translateX(-50%) translateY(-120%);
   &:before {
     content: '';
@@ -31,6 +32,7 @@
 }
 
 .title {
+  margin: 0.25rem;
   font-weight: bold;
 }
 

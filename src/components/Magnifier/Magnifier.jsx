@@ -96,7 +96,9 @@ const Magnifier = ({ src, width = '', magnifierWidth = 200, zoomLevel = 2 }) => 
         alt={'img'}
         draggable={false}
       />
-      {showPopover && <Popover coords={popoverCoords} list={['Alex Honnold']} />}
+      {showPopover && (
+        <Popover coords={popoverCoords} list={['Alex Honnold', 'Boot Flake', 'Texas Flake']} />
+      )}
 
       <div
         style={{

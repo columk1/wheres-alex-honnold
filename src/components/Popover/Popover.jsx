@@ -9,7 +9,9 @@ const Popover = ({ coords, list }) => {
         <p className={styles.title}>Items</p>
         <div className={styles.list}>
           {list.map((item) => (
-            <button key={item} defaultValue={item} />
+            <button key={item} defaultValue={item}>
+              {item}
+            </button>
           ))}
         </div>
       </div>
