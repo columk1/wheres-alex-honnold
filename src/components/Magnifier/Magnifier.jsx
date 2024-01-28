@@ -1,5 +1,6 @@
 import styles from './Magnifier.module.css'
 import { useState, useEffect, useRef, useLayoutEffect } from 'react'
+import Popover from '../Popover/Popover'
 
 // Todo: Zoom level may need to be a function of image size
 const Magnifier = ({ src, width = '', magnifierWidth = 200, zoomLevel = 2 }) => {
@@ -9,6 +10,8 @@ const Magnifier = ({ src, width = '', magnifierWidth = 200, zoomLevel = 2 }) => 
   const [isMouseDown, setIsMouseDown] = useState(false)
   const [isMouseOut, setIsMouseOut] = useState(false)
   const [wasDragged, setWasDragged] = useState(false)
+  const [showPopover, setShowPopover] = useState(false)
+  const [popoverCoords, setPopoverCoords] = useState({ x: 0, y: 0 })
   const [loading, setLoading] = useState(true)
   const imageContainer = useRef(null)
 
@@ -46,7 +49,7 @@ const Magnifier = ({ src, width = '', magnifierWidth = 200, zoomLevel = 2 }) => 
         onMouseEnter={(e) => {
           const { width, height } = e.currentTarget.getBoundingClientRect()
           setSize([width, height])
-          setShowMagnifier(true)
+          if (!showPopover) setShowMagnifier(true)
         }}
         onMouseDown={(e) => {
           setIsMouseDown(true)
@@ -80,9 +83,20 @@ const Magnifier = ({ src, width = '', magnifierWidth = 200, zoomLevel = 2 }) => 
           setIsMouseOut(true)
           setIsMouseDown(false)
         }}
+        onClick={(e) => {
+          if (wasDragged) return
+          const { top, left } = e.currentTarget.getBoundingClientRect()
+          setPopoverCoords({
+            x: e.pageX - left - window.scrollX,
+            y: e.pageY - top - window.scrollY,
+          })
+          setShowPopover(!showPopover)
+          setShowMagnifier(!showMagnifier)
+        }}
         alt={'img'}
         draggable={false}
       />
+      {showPopover && <Popover coords={popoverCoords} list={['Alex Honnold']} />}
 
       <div
         style={{
