@@ -12,6 +12,9 @@ const Magnifier = ({ src, width = '', magnifierWidth = 200, zoomLevel = 2 }) => 
   const [wasDragged, setWasDragged] = useState(false)
   const [showPopover, setShowPopover] = useState(false)
   const [popoverCoords, setPopoverCoords] = useState({ x: 0, y: 0 })
+  const [foundItems, setFoundItems] = useState([
+    { name: 'Boot Flake', overlaySrc: './boot-flake.png' },
+  ])
   const [loading, setLoading] = useState(true)
   const imageContainer = useRef(null)
 
@@ -99,6 +102,16 @@ const Magnifier = ({ src, width = '', magnifierWidth = 200, zoomLevel = 2 }) => 
       {showPopover && (
         <Popover coords={popoverCoords} list={['Alex Honnold', 'Boot Flake', 'Texas Flake']} />
       )}
+
+      {foundItems.map((item) => (
+        <img
+          key={item.name}
+          className={styles.overlay}
+          src={item.overlaySrc}
+          alt={item.name}
+          draggable={false}
+        />
+      ))}
 
       <div
         style={{
