@@ -1,7 +1,7 @@
 import styles from './Popover.module.css'
 import { useState } from 'react'
 
-const Popover = ({ coords, list }) => {
+const Popover = ({ coords, list, handleSelection }) => {
   console.log('coords: ', coords)
   return (
     <>
@@ -9,7 +9,7 @@ const Popover = ({ coords, list }) => {
         <p className={styles.title}>Items</p>
         <div className={styles.list}>
           {list.map((item) => (
-            <button key={item} defaultValue={item}>
+            <button key={item} onClick={() => handleSelection(item, coords)}>
               {item}
             </button>
           ))}

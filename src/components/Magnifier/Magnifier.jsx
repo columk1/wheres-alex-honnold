@@ -2,6 +2,13 @@ import styles from './Magnifier.module.css'
 import { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import Popover from '../Popover/Popover'
 
+const data = [
+  { name: 'Alex Honnold', overlaySrc: './honnold.png', x: 983.2, y: 1065.5 },
+  { name: 'Boot Flake', overlaySrc: './boot-flake.png', x: 1633, y: 913 },
+  { name: 'El Cap Spire', overlaySrc: './el-cap-spire.png', x: 1002, y: 965 },
+  { name: 'The Nipple', overlaySrc: './nipple.png', x: 3198, y: 1185 },
+]
+
 // Todo: Zoom level may need to be a function of image size
 const Magnifier = ({ src, width = '', magnifierWidth = 200, zoomLevel = 2 }) => {
   const [[x, y], setXY] = useState([0, 0]) // cursor position in the image
@@ -12,9 +19,7 @@ const Magnifier = ({ src, width = '', magnifierWidth = 200, zoomLevel = 2 }) => 
   const [wasDragged, setWasDragged] = useState(false)
   const [showPopover, setShowPopover] = useState(false)
   const [popoverCoords, setPopoverCoords] = useState({ x: 0, y: 0 })
-  const [foundItems, setFoundItems] = useState([
-    { name: 'Boot Flake', overlaySrc: './boot-flake.png' },
-  ])
+  const [foundItems, setFoundItems] = useState([])
   const [loading, setLoading] = useState(true)
   const imageContainer = useRef(null)
 
@@ -34,6 +39,27 @@ const Magnifier = ({ src, width = '', magnifierWidth = 200, zoomLevel = 2 }) => 
       container.scrollTo(offsetX, offsetY)
     }
   }, [loading])
+
+  const handleSelection = (name, coords) => {
+    setShowPopover(false)
+    console.log('handleSelection')
+    data.forEach((item) => {
+      console.log(name)
+      console.log(item.name)
+      if (item.name === name) {
+        console.log('item: ', item.name)
+        if (
+          coords.x > item.x - 20 &&
+          coords.x < item.x + 20 &&
+          coords.y > item.y - 20 &&
+          coords.y < item.y + 20
+        ) {
+          console.log('found item: ', item.name)
+          setFoundItems([...foundItems, item])
+        }
+      }
+    })
+  }
 
   return (
     <div
@@ -100,7 +126,13 @@ const Magnifier = ({ src, width = '', magnifierWidth = 200, zoomLevel = 2 }) => 
         draggable={false}
       />
       {showPopover && (
-        <Popover coords={popoverCoords} list={['Alex Honnold', 'Boot Flake', 'Texas Flake']} />
+        <Popover
+          coords={popoverCoords}
+          list={['Alex Honnold', 'Boot Flake', 'El Cap Spire', 'The Nipple'].filter(
+            (item) => !foundItems.some((foundItem) => foundItem.name === item)
+          )}
+          handleSelection={handleSelection}
+        />
       )}
 
       {foundItems.map((item) => (
