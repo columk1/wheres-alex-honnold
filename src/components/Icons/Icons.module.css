@@ -1,0 +1,21 @@
+.icons {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.iconGroup {
+  display: grid;
+  place-items: center;
+  width: 5.5rem;
+  height: 5.5rem;
+  padding: 0.5rem;
+  background-color: #1a1a1a;
+  border-radius: 0.5rem;
+}
+
+.iconTitle {
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: bold;
+}
