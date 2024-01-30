@@ -10,7 +10,7 @@ const data = [
 ]
 
 // Todo: Zoom level may need to be a function of image size
-const Magnifier = ({ src, width = '', magnifierWidth = 200, zoomLevel = 2 }) => {
+const Magnifier = ({ src, width = '', magnifierWidth = 100, zoomLevel = 1.5 }) => {
   const [[x, y], setXY] = useState([0, 0]) // cursor position in the image
   const [[imgWidth, imgHeight], setSize] = useState([0, 0])
   const [showMagnifier, setShowMagnifier] = useState(false)
@@ -80,7 +80,7 @@ const Magnifier = ({ src, width = '', magnifierWidth = 200, zoomLevel = 2 }) => 
           setSize([width, height])
           if (!showPopover) setShowMagnifier(true)
         }}
-        onMouseDown={(e) => {
+        onPointerDown={(e) => {
           setIsMouseDown(true)
           setIsMouseOut(false)
           setWasDragged(false)
@@ -92,10 +92,10 @@ const Magnifier = ({ src, width = '', magnifierWidth = 200, zoomLevel = 2 }) => 
           })
           // setDragStart({ x: x, y: y })
         }}
-        onMouseUp={() => {
+        onPointerUp={() => {
           setIsMouseDown(false)
         }}
-        onMouseMove={(e) => {
+        onPointerMove={(e) => {
           if (isMouseDown && !isMouseOut) {
             imageContainer.current.scrollTo(dragStart.x - e.clientX, dragStart.y - e.clientY)
             setWasDragged(true)
