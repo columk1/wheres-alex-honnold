@@ -3,10 +3,11 @@ import { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import Popover from '../Popover/Popover'
 
 const data = [
-  { name: 'Alex Honnold', overlaySrc: './honnold.png', x: 983.2, y: 1065.5 },
-  { name: 'Boot Flake', overlaySrc: './boot-flake.png', x: 1633, y: 913 },
-  { name: 'El Cap Spire', overlaySrc: './el-cap-spire.png', x: 1002, y: 965 },
-  { name: 'The Nipple', overlaySrc: './nipple.png', x: 3198, y: 1185 },
+  { name: 'Alex Honnold', overlaySrc: './honnold.png', x: 508, y: 551.2 },
+  { name: 'Boot Flake', overlaySrc: './boot-flake.png', x: 843.5, y: 472.6 },
+  { name: 'El Cap Spire', overlaySrc: './el-cap-spire.png', x: 519, y: 500 },
+  { name: 'The Great Roof', overlaySrc: './great-roof.png', x: 811, y: 353 },
+  { name: 'The Nipple', overlaySrc: './nipple.png', x: 1653, y: 608.6 },
 ]
 
 // Todo: Zoom level may need to be a function of image size
@@ -128,9 +129,13 @@ const Magnifier = ({ src, width = '', magnifierWidth = 100, zoomLevel = 1.5 }) =
       {showPopover && (
         <Popover
           coords={popoverCoords}
-          list={['Alex Honnold', 'Boot Flake', 'El Cap Spire', 'The Nipple'].filter(
-            (item) => !foundItems.some((foundItem) => foundItem.name === item)
-          )}
+          list={[
+            'Alex Honnold',
+            'Boot Flake',
+            'El Cap Spire',
+            'The Great Roof',
+            'The Nipple',
+          ].filter((item) => !foundItems.some((foundItem) => foundItem.name === item))}
           handleSelection={handleSelection}
         />
       )}

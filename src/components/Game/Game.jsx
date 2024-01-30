@@ -19,7 +19,7 @@ const Game = () => {
   // const { width, height } = size
   return (
     <>
-      <Magnifier src='elcap.jpg' />
+      <Magnifier src='elcap-main.jpg' />
       {/* <img ref={imgRef} src='elcap.jpg' onMouseMove={handleMouseMove}></img> */}
     </>
   )
