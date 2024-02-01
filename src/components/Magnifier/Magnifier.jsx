@@ -128,6 +128,7 @@ const Magnifier = ({ src, width = '', magnifierWidth = 100, zoomLevel = 1.5 }) =
             setPopoverCoords({
               x: e.pageX - left - window.scrollX,
               y: e.pageY - top - window.scrollY,
+              isUpperHalf: e.pageY < window.innerHeight / 2,
             })
             setShowPopover(!showPopover)
             setShowMagnifier(!showMagnifier)
@@ -137,7 +138,7 @@ const Magnifier = ({ src, width = '', magnifierWidth = 100, zoomLevel = 1.5 }) =
         />
         {showPopover && (
           <Popover
-            coords={popoverCoords}
+            location={popoverCoords}
             list={[
               'Alex Honnold',
               'Boot Flake',
