@@ -8,12 +8,12 @@ export default function Splash({ startGame }) {
     <>
       <h1 className={styles.title}>Greetings, fellow Aramark employee!</h1>
       <p className={styles.introduction}>
-        You've just spent most of the day cleaning up after a bachelor party at housekeeping. What a
-        relief to be at the meadow!
+        You've spent most of the day cleaning up after a bachelor party at housekeeping. What a
+        relief to be back at the meadow!
       </p>
       <p className={styles.introduction}>
-        Unfortunately, a group of tourists have just arrived. They want to know where Alex Honnold
-        is. You won't be able to relax until they leave.
+        Unfortunately, a group of tourists are approaching. Guess what? They want to know where Alex
+        Honnold is. You won't be able to relax until they leave.
       </p>
       <p className={styles.directions}>
         Your task is to find our hero Alex and locate each the following features in as little time
@@ -34,7 +34,7 @@ export default function Splash({ startGame }) {
       <h1 className={styles.title}>Where's Alex Honnold?</h1>
       <div className={styles.startBtn}>
         <button className={styles.btn} onClick={() => setShowIntro(true)}>
-          Begin
+          Start
         </button>
       </div>
       <p className={styles.description}>Find our hero on el Cap</p>
