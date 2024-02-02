@@ -4,17 +4,14 @@ import { useState } from 'react'
 const Popover = ({ location, list, handleSelection }) => {
   console.log('coords: ', location)
   const { x, y, isUpperHalf } = location
-  // Different style depending on if click was in upper half of window
-  const popoverStyle = isUpperHalf
-    ? { top: y, left: x, transform: 'translateX(-50%) translateY(20%)' }
-    : { top: y, left: x }
 
-  const arrowStyle = isUpperHalf
-    ? { top: '-10px', transform: 'translateX(-50%)rotate(180deg)' }
-    : {}
   return (
     <>
-      <div className={styles.popover} style={popoverStyle}>
+      <div
+        // Different style depending on if click was in the upper half of window
+        className={isUpperHalf ? styles.popoverUpper : styles.popover}
+        style={{ top: y, left: x }}
+      >
         <p className={styles.title}>Items</p>
         <div className={styles.list}>
           {list.map((item) => (
@@ -23,9 +20,8 @@ const Popover = ({ location, list, handleSelection }) => {
             </button>
           ))}
         </div>
-        <div className={styles.arrow} style={arrowStyle} />
+        {/* <div className={styles.arrow} style={arrowStyle} /> */}
       </div>
-
       <div className={styles.target} style={{ top: y, left: x }} />
     </>
   )
