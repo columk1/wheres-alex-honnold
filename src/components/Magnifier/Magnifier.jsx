@@ -2,12 +2,13 @@ import styles from './Magnifier.module.css'
 import { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import Popover from '../Popover/Popover'
 import Modal from '../Modal/Modal'
+import Leaderboard from '../Leaderboard/Leaderboard'
 
 const data = [
-  { name: 'Alex Honnold', overlaySrc: './honnold.png', x: 508, y: 551.2 },
-  { name: 'Boot Flake', overlaySrc: './boot-flake.png', x: 843.5, y: 472.6 },
-  { name: 'El Cap Spire', overlaySrc: './el-cap-spire.png', x: 519, y: 500 },
-  { name: 'The Great Roof', overlaySrc: './great-roof.png', x: 811, y: 353 },
+  // { name: 'Alex Honnold', overlaySrc: './honnold.png', x: 508, y: 551.2 },
+  // { name: 'Boot Flake', overlaySrc: './boot-flake.png', x: 843.5, y: 472.6 },
+  // { name: 'El Cap Spire', overlaySrc: './el-cap-spire.png', x: 519, y: 500 },
+  // { name: 'The Great Roof', overlaySrc: './great-roof.png', x: 811, y: 353 },
   { name: 'The Nipple', overlaySrc: './nipple.png', x: 1653, y: 608.6 },
 ]
 
@@ -23,6 +24,8 @@ const Magnifier = ({ src, width = '', magnifierWidth = 100, zoomLevel = 1.5 }) =
   const [popoverCoords, setPopoverCoords] = useState({ x: 0, y: 0 })
   const [foundItems, setFoundItems] = useState([])
   const [isGameStarted, setIsGameStarted] = useState(false)
+  // const [gameState, setGameState] = useState('')
+  const [name, setName] = useState('')
   const [loading, setLoading] = useState(true)
   const imageContainer = useRef(null)
 
@@ -64,7 +67,13 @@ const Magnifier = ({ src, width = '', magnifierWidth = 100, zoomLevel = 1.5 }) =
     })
   }
 
-  return (
+  const endGame = () => data.length === foundItems.length
+
+  return endGame() && !isGameStarted ? (
+    <>
+      <Leaderboard scores={[{ name: name, time: '2m 23s' }]} />
+    </>
+  ) : (
     <>
       <Modal openModal={!isGameStarted} closeModal={() => setIsGameStarted(true)} buttonText='OK!'>
         <p>
@@ -184,6 +193,22 @@ const Magnifier = ({ src, width = '', magnifierWidth = 100, zoomLevel = 1.5 }) =
           }}
         />
       </div>
+      <Modal
+        openModal={endGame()}
+        closeModal={() => setIsGameStarted(false)}
+        buttonText='Save score'
+      >
+        <h2>You did it!</h2>
+        <p>The tourists are leaving. It only took you {} minutes.</p>
+        <label htmlFor='name'>Enter your name below to see your score on the leaderboard</label>
+        <input
+          type='text'
+          name='name'
+          placeholder='Sender McGee'
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </Modal>
     </>
   )
 }
