@@ -1,0 +1,30 @@
+.leaderboard {
+  width: min(80vw, 868px);
+}
+
+.listItem {
+  display: flex;
+  border: 1px solid #555;
+  background-color: #333333;
+  font-weight: bold;
+  &:not(:last-child) {
+    border-bottom: 0;
+  }
+  & p {
+    margin: 0;
+    padding: 0.75rem 1.5rem;
+  }
+  & p:not(:last-child) {
+    border-right: 1px solid #555;
+  }
+}
+
+.name {
+  flex: 1;
+  text-align: left;
+}
+
+.time {
+  width: 7rem;
+  text-align: left;
+}

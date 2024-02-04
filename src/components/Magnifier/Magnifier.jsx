@@ -206,6 +206,7 @@ const Magnifier = ({ src, width = '', magnifierWidth = 100, zoomLevel = 1.5 }) =
           name='name'
           placeholder='Sender McGee'
           value={name}
+          maxLength={30}
           onChange={(e) => setName(e.target.value)}
         />
       </Modal>

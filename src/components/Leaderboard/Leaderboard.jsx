@@ -1,15 +1,24 @@
 import styles from './Leaderboard.module.css'
 const Leaderboard = ({ scores }) => {
-  console.log(scores)
+  const leaderboard = [
+    { name: 'Biggie Smalls', time: '10m 4.224s' },
+    { name: 'Alex Honnold', time: '12m 6.628s' },
+    { name: 'Little Crimpy', time: '22h 3m 2.34s' },
+    { name: 'Wide Pony 69', time: '45m 4.082s' },
+    { name: 'French Frees', time: '4m 7.024s' },
+  ]
+
+  scores = [...scores, ...leaderboard]
+
   return (
     <div className={styles.leaderboard}>
       <h1>Leaderboard</h1>
       <ul>
         {scores.map((score, i) => (
-          <li key={score.name}>
+          <li className={styles.listItem} key={score.name}>
             <p>{i + 1}</p>
-            <p>{score.name}</p>
-            <p>{score.time}</p>
+            <p className={styles.name}>{score.name}</p>
+            <p className={styles.time}>{score.time}</p>
           </li>
         ))}
       </ul>
