@@ -68,10 +68,15 @@ const Magnifier = ({ src, width = '', magnifierWidth = 100, zoomLevel = 1.5 }) =
   }
 
   const endGame = () => data.length === foundItems.length
+  const restartGame = () => {
+    setFoundItems([])
+    setIsGameStarted(false)
+  }
 
   return endGame() && !isGameStarted ? (
     <>
       <Leaderboard scores={[{ name: name, time: '2m 23s' }]} />
+      <button onClick={restartGame}>Play Again</button>
     </>
   ) : (
     <>
