@@ -2,7 +2,7 @@ import styles from './Popover.module.css'
 import { useState } from 'react'
 
 const Popover = ({ location, list, handleSelection }) => {
-  console.log('coords: ', location)
+  // console.log('coords: ', location)
   const { x, y, isUpperHalf } = location
 
   return (

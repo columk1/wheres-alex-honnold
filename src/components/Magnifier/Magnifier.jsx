@@ -1,15 +1,16 @@
 import styles from './Magnifier.module.css'
 import { useState, useEffect, useRef, useLayoutEffect } from 'react'
+import { validateCoords } from '../../firebase'
 import Popover from '../Popover/Popover'
 import Modal from '../Modal/Modal'
 import Leaderboard from '../Leaderboard/Leaderboard'
 
 const data = [
-  // { name: 'Alex Honnold', overlaySrc: './honnold.png', x: 508, y: 551.2 },
-  // { name: 'Boot Flake', overlaySrc: './boot-flake.png', x: 843.5, y: 472.6 },
-  // { name: 'El Cap Spire', overlaySrc: './el-cap-spire.png', x: 519, y: 500 },
-  // { name: 'The Great Roof', overlaySrc: './great-roof.png', x: 811, y: 353 },
-  { name: 'The Nipple', overlaySrc: './nipple.png', x: 1653, y: 608.6 },
+  { name: 'Alex Honnold', overlaySrc: './honnold.png' },
+  { name: 'Boot Flake', overlaySrc: './boot-flake.png' },
+  { name: 'El Cap Spire', overlaySrc: './el-cap-spire.png' },
+  { name: 'The Great Roof', overlaySrc: './great-roof.png' },
+  { name: 'The Nipple', overlaySrc: './nipple.png' },
 ]
 
 // Todo: Zoom level may need to be a function of image size
@@ -46,25 +47,15 @@ const Magnifier = ({ src, width = '', magnifierWidth = 100, zoomLevel = 1.5 }) =
     }
   }, [loading])
 
-  const handleSelection = (name, coords) => {
+  const handleSelection = async (name, coords) => {
     setShowPopover(false)
-    console.log('handleSelection')
-    data.forEach((item) => {
-      console.log(name)
-      console.log(item.name)
-      if (item.name === name) {
-        console.log('item: ', item.name)
-        if (
-          coords.x > item.x - 20 &&
-          coords.x < item.x + 20 &&
-          coords.y > item.y - 20 &&
-          coords.y < item.y + 20
-        ) {
-          console.log('found item: ', item.name)
-          setFoundItems([...foundItems, item])
-        }
-      }
-    })
+    const isValidSelection = await validateCoords(name, coords)
+    if (isValidSelection) {
+      console.log('found item: ', name)
+      setFoundItems([...foundItems, data.filter((item) => item.name === name)[0]])
+    } else {
+      console.log('Nope, try again')
+    }
   }
 
   const endGame = () => data.length === foundItems.length
@@ -85,6 +76,23 @@ const Magnifier = ({ src, width = '', magnifierWidth = 100, zoomLevel = 1.5 }) =
           Move the image by clicking and dragging. When you've found one of the features, click on
           it. Good luck!
         </p>
+      </Modal>
+      <Modal
+        openModal={endGame()}
+        closeModal={() => setIsGameStarted(false)}
+        buttonText='Save score'
+      >
+        <h2>You did it!</h2>
+        <p>The tourists are leaving. It only took you {} minutes.</p>
+        <label htmlFor='name'>Enter your name below to see your score on the leaderboard</label>
+        <input
+          type='text'
+          name='name'
+          placeholder='Sender McGee'
+          value={name}
+          maxLength={30}
+          onChange={(e) => setName(e.target.value)}
+        />
       </Modal>
       <div
         className={styles.imgContainer}
@@ -111,8 +119,8 @@ const Magnifier = ({ src, width = '', magnifierWidth = 100, zoomLevel = 1.5 }) =
             // dragStart.x = imageContainer.current.scrollLeft + e.clientX
             // dragStart.y = imageContainer.current.scrollTop + e.clientY
             setDragStart({
-              x: imageContainer.current.scrollLeft + e.clientX,
-              y: imageContainer.current.scrollTop + e.clientY,
+              x: imageContainer.current.scrollLeft + (e.clientX || e.targetTouches[0].clientX),
+              y: imageContainer.current.scrollTop + (e.clientY || e.targetTouches[0].clientY),
             })
             // setDragStart({ x: x, y: y })
           }}
@@ -121,14 +129,32 @@ const Magnifier = ({ src, width = '', magnifierWidth = 100, zoomLevel = 1.5 }) =
           }}
           onPointerMove={(e) => {
             if (isMouseDown && !isMouseOut) {
-              imageContainer.current.scrollTo(dragStart.x - e.clientX, dragStart.y - e.clientY)
+              imageContainer.current.scrollTo(
+                dragStart.x - (e.clientX || e.targetTouches[0].pageX),
+                dragStart.y - (e.clientY || e.targetTouches[0].pageY)
+              )
               setWasDragged(true)
             }
             // Get coords of top left of image
             const { top, left } = e.currentTarget.getBoundingClientRect()
             // Calculate cursor position in the image
-            const x = e.pageX - left - window.scrollX
-            const y = e.pageY - top - window.scrollY
+            const x = (e.pageX || e.target.touches[0].pageX) - left - window.scrollX
+            const y = (e.pageY || e.target.touches[0].pageY) - top - window.scrollY
+            setXY([x, y])
+          }}
+          onTouchMove={(e) => {
+            if (isMouseDown && !isMouseOut) {
+              imageContainer.current.scrollTo(
+                dragStart.x - (e.clientX || e.targetTouches[0].pageX),
+                dragStart.y - (e.clientY || e.targetTouches[0].pageY)
+              )
+              setWasDragged(true)
+            }
+            // Get coords of top left of image
+            const { top, left } = e.currentTarget.getBoundingClientRect()
+            // Calculate cursor position in the image
+            const x = (e.pageX || e.targetTouches[0].pageX) - left - window.scrollX
+            const y = (e.pageY || e.targetTouches[0].pageY) - top - window.scrollY
             setXY([x, y])
           }}
           onMouseLeave={() => {
@@ -198,23 +224,6 @@ const Magnifier = ({ src, width = '', magnifierWidth = 100, zoomLevel = 1.5 }) =
           }}
         />
       </div>
-      <Modal
-        openModal={endGame()}
-        closeModal={() => setIsGameStarted(false)}
-        buttonText='Save score'
-      >
-        <h2>You did it!</h2>
-        <p>The tourists are leaving. It only took you {} minutes.</p>
-        <label htmlFor='name'>Enter your name below to see your score on the leaderboard</label>
-        <input
-          type='text'
-          name='name'
-          placeholder='Sender McGee'
-          value={name}
-          maxLength={30}
-          onChange={(e) => setName(e.target.value)}
-        />
-      </Modal>
     </>
   )
 }
