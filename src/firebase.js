@@ -36,6 +36,7 @@ const firebaseApp = initializeApp(firebaseConfig)
 const db = getFirestore(firebaseApp)
 
 const featuresRef = collection(db, 'features')
+const gamesRef = collection(db, 'games')
 
 const createDocument = (collectionName, document) => {
   const collectionRef = collection(db, collectionName)
@@ -100,26 +101,42 @@ function convertTime(input) {
   console.log(duration)
 }
 
-async function saveScore(name, documentId) {
-  const gameRef = doc(db, 'games', documentId)
-  const gameSnapshot = await getDoc(gameRef)
-  const game = gameSnapshot.data()
+// async function saveScore(name, documentId) {
+//   const gameRef = doc(db, 'games', documentId)
+//   const gameSnapshot = await getDoc(gameRef)
+//   const game = gameSnapshot.data()
 
-  let start = new Date(game.startAt.toDate())
-  let end = new Date(game.endAt.toDate())
+//   let start = new Date(game.startAt.toDate())
+//   let end = new Date(game.endAt.toDate())
 
-  await addDoc(db, 'scores', {
-    game: documentId,
-    name: name,
-    score: end - start,
-  })
-}
+//   await addDoc(db, 'scores', {
+//     game: documentId,
+//     name: name,
+//     score: end - start,
+//   })
+// }
+
+// async function getScores() {
+//   const q = query(collection(db, 'scores'))
+//   const querySnapshot = await getDocs(q)
+//   const documents = querySnapshot.docs.map((doc) => doc.data())
+//   return documents
+// }
 
 async function getScores() {
-  const q = query(collection(db, 'scores'))
+  const q = query(gamesRef, where('name', '!=', null))
   const querySnapshot = await getDocs(q)
-  const documents = querySnapshot.docs.map((doc) => doc.data())
-  return documents
+  const games = querySnapshot.docs.map((doc) => doc.data())
+  let scores = []
+  games.forEach((game) => {
+    let start = new Date(game.startAt.toDate())
+    let end = new Date(game.endAt.toDate())
+    scores.push({
+      name: game.name,
+      score: end - start,
+    })
+  })
+  return scores
 }
 
 export { createDocument, getDocuments, validateCoords, startTimer, endTimer, saveScore, getScores }
