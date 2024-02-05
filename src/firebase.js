@@ -82,14 +82,12 @@ async function endTimer(documentId) {
     endAt: serverTimestamp(),
   })
   console.log(gameRef)
-  const game = await getDoc(gameRef)
-  console.log(game.data())
-  console.log(game)
-  console.log(game.startAt)
-  console.log(game.startAt.nanoseconds)
-  let time = game.endAt.nanoseconds - game.startAt.nanoseconds
-  console.log(time)
-  console.log(time / 1000000)
+  const updatedDoc = await getDoc(gameRef)
+  const game = updatedDoc.data()
+  console.log(game.startAt.toDate())
+  let start = new Date(game.startAt.toDate())
+  let end = new Date(game.endAt.toDate())
+  console.log(convertTime(end - start))
 }
 
 function convertTime(input) {
@@ -102,4 +100,26 @@ function convertTime(input) {
   console.log(duration)
 }
 
-export { createDocument, getDocuments, validateCoords, startTimer, endTimer }
+async function saveScore(name, documentId) {
+  const gameRef = doc(db, 'games', documentId)
+  const gameSnapshot = await getDoc(gameRef)
+  const game = gameSnapshot.data()
+
+  let start = new Date(game.startAt.toDate())
+  let end = new Date(game.endAt.toDate())
+
+  await addDoc(db, 'scores', {
+    game: documentId,
+    name: name,
+    score: end - start,
+  })
+}
+
+async function getScores() {
+  const q = query(collection(db, 'scores'))
+  const querySnapshot = await getDocs(q)
+  const documents = querySnapshot.docs.map((doc) => doc.data())
+  return documents
+}
+
+export { createDocument, getDocuments, validateCoords, startTimer, endTimer, saveScore, getScores }
