@@ -8,9 +8,12 @@ import {
   query,
   where,
   getDocs,
+  getDoc,
   setDoc,
   addDoc,
+  updateDoc,
   deleteDoc,
+  serverTimestamp,
 } from 'firebase/firestore'
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -65,4 +68,38 @@ async function validateCoords(featureName, coords) {
   return false
 }
 
-export { createDocument, getDocuments, validateCoords }
+async function startTimer(documentId) {
+  // const gamesRef = collection(db, 'games')
+  await setDoc(doc(db, 'games', documentId), {
+    // id: documentId,
+    startAt: serverTimestamp(),
+  })
+}
+
+async function endTimer(documentId) {
+  const gameRef = doc(db, 'games', documentId)
+  await updateDoc(gameRef, {
+    endAt: serverTimestamp(),
+  })
+  console.log(gameRef)
+  const game = await getDoc(gameRef)
+  console.log(game.data())
+  console.log(game)
+  console.log(game.startAt)
+  console.log(game.startAt.nanoseconds)
+  let time = game.endAt.nanoseconds - game.startAt.nanoseconds
+  console.log(time)
+  console.log(time / 1000000)
+}
+
+function convertTime(input) {
+  let seconds = Math.floor(input / 1000)
+  let ms = input - seconds * 1000
+  let m = Math.floor(seconds / 60)
+  let s = seconds - m * 60
+
+  let duration = m + ':' + s + '.' + ms
+  console.log(duration)
+}
+
+export { createDocument, getDocuments, validateCoords, startTimer, endTimer }

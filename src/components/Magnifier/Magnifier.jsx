@@ -1,17 +1,20 @@
 import styles from './Magnifier.module.css'
 import { useState, useEffect, useRef, useLayoutEffect } from 'react'
-import { validateCoords } from '../../firebase'
+import { validateCoords, startTimer, endTimer } from '../../firebase'
+import { v4 as uuidv4 } from 'uuid'
 import Popover from '../Popover/Popover'
 import Modal from '../Modal/Modal'
 import Leaderboard from '../Leaderboard/Leaderboard'
 
 const data = [
-  { name: 'Alex Honnold', overlaySrc: './honnold.png' },
-  { name: 'Boot Flake', overlaySrc: './boot-flake.png' },
+  // { name: 'Alex Honnold', overlaySrc: './honnold.png' },
+  // { name: 'Boot Flake', overlaySrc: './boot-flake.png' },
   { name: 'El Cap Spire', overlaySrc: './el-cap-spire.png' },
   { name: 'The Great Roof', overlaySrc: './great-roof.png' },
-  { name: 'The Nipple', overlaySrc: './nipple.png' },
+  // { name: 'The Nipple', overlaySrc: './nipple.png' },
 ]
+
+const id = uuidv4()
 
 // Todo: Zoom level may need to be a function of image size
 const Magnifier = ({ src, width = '', magnifierWidth = 100, zoomLevel = 1.5 }) => {
@@ -25,6 +28,7 @@ const Magnifier = ({ src, width = '', magnifierWidth = 100, zoomLevel = 1.5 }) =
   const [popoverCoords, setPopoverCoords] = useState({ x: 0, y: 0 })
   const [foundItems, setFoundItems] = useState([])
   const [isGameStarted, setIsGameStarted] = useState(false)
+  const [isGameOver, setIsGameOver] = useState(false)
   // const [gameState, setGameState] = useState('')
   const [name, setName] = useState('')
   const [loading, setLoading] = useState(true)
@@ -53,32 +57,50 @@ const Magnifier = ({ src, width = '', magnifierWidth = 100, zoomLevel = 1.5 }) =
     if (isValidSelection) {
       console.log('found item: ', name)
       setFoundItems([...foundItems, data.filter((item) => item.name === name)[0]])
+      if (data.length - 1 === foundItems.length) {
+        endTimer(id)
+        setIsGameOver(true)
+      }
     } else {
       console.log('Nope, try again')
     }
   }
 
-  const endGame = () => data.length === foundItems.length
+  const endGame = () => {
+    if (data.length === foundItems.length) {
+      endTimer(id)
+      return true
+    }
+    return false
+  }
+
   const restartGame = () => {
     setFoundItems([])
     setIsGameStarted(false)
   }
 
-  return endGame() && !isGameStarted ? (
+  return isGameOver && !isGameStarted ? (
     <>
       <Leaderboard scores={[{ name: name, time: '2m 23s' }]} />
       <button onClick={restartGame}>Play Again</button>
     </>
   ) : (
     <>
-      <Modal openModal={!isGameStarted} closeModal={() => setIsGameStarted(true)} buttonText='OK!'>
+      <Modal
+        openModal={!isGameStarted}
+        closeModal={() => {
+          startTimer(id)
+          setIsGameStarted(true)
+        }}
+        buttonText='OK!'
+      >
         <p>
           Move the image by clicking and dragging. When you've found one of the features, click on
           it. Good luck!
         </p>
       </Modal>
       <Modal
-        openModal={endGame()}
+        openModal={isGameOver}
         closeModal={() => setIsGameStarted(false)}
         buttonText='Save score'
       >
