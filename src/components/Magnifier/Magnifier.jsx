@@ -1,6 +1,6 @@
 import styles from './Magnifier.module.css'
 import { useState, useEffect, useRef, useLayoutEffect } from 'react'
-import { validateCoords, startTimer, endTimer } from '../../firebase'
+import { validateCoords, startTimer, endTimer, saveScore } from '../../firebase'
 import { v4 as uuidv4 } from 'uuid'
 import Popover from '../Popover/Popover'
 import Modal from '../Modal/Modal'
@@ -77,11 +77,13 @@ const Magnifier = ({ src, width = '', magnifierWidth = 100, zoomLevel = 1.5 }) =
   const restartGame = () => {
     setFoundItems([])
     setIsGameStarted(false)
+    setIsGameOver(false)
   }
 
   return isGameOver && !isGameStarted ? (
     <>
-      <Leaderboard scores={[{ name: name, time: '2m 23s' }]} />
+      {/* <Leaderboard scores={[{ name: name, time: '2m 23s' }]} /> */}
+      <Leaderboard />
       <button onClick={restartGame}>Play Again</button>
     </>
   ) : (
@@ -101,7 +103,10 @@ const Magnifier = ({ src, width = '', magnifierWidth = 100, zoomLevel = 1.5 }) =
       </Modal>
       <Modal
         openModal={isGameOver}
-        closeModal={() => setIsGameStarted(false)}
+        closeModal={() => {
+          setIsGameStarted(false)
+          saveScore(id, name)
+        }}
         buttonText='Save score'
       >
         <h2>You did it!</h2>

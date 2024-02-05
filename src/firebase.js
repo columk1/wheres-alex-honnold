@@ -82,23 +82,26 @@ async function endTimer(documentId) {
   await updateDoc(gameRef, {
     endAt: serverTimestamp(),
   })
-  console.log(gameRef)
+  // console.log(gameRef)
   const updatedDoc = await getDoc(gameRef)
   const game = updatedDoc.data()
-  console.log(game.startAt.toDate())
+  console.log('start at date: ', game.startAt.toDate())
+  console.log('end at date: ', game.endAt.toDate())
   let start = new Date(game.startAt.toDate())
   let end = new Date(game.endAt.toDate())
-  console.log(convertTime(end - start))
+  // console.log('converted time: ', convertTime(end - start))
 }
 
 function convertTime(input) {
   let seconds = Math.floor(input / 1000)
   let ms = input - seconds * 1000
-  let m = Math.floor(seconds / 60)
+  let m = Math.floor(seconds / 60) || ''
   let s = seconds - m * 60
 
-  let duration = m + ':' + s + '.' + ms
-  console.log(duration)
+  m = m ? m + 'm' : ''
+
+  let duration = m + s + '.' + ms + 's'
+  return duration
 }
 
 // async function saveScore(name, documentId) {
@@ -116,6 +119,13 @@ function convertTime(input) {
 //   })
 // }
 
+async function saveScore(documentId, name) {
+  const gameRef = doc(db, 'games', documentId)
+  await updateDoc(gameRef, {
+    name: name,
+  })
+}
+
 // async function getScores() {
 //   const q = query(collection(db, 'scores'))
 //   const querySnapshot = await getDocs(q)
@@ -127,13 +137,14 @@ async function getScores() {
   const q = query(gamesRef, where('name', '!=', null))
   const querySnapshot = await getDocs(q)
   const games = querySnapshot.docs.map((doc) => doc.data())
+  console.log('games: ', games)
   let scores = []
   games.forEach((game) => {
     let start = new Date(game.startAt.toDate())
     let end = new Date(game.endAt.toDate())
     scores.push({
       name: game.name,
-      score: end - start,
+      time: convertTime(end - start),
     })
   })
   return scores
