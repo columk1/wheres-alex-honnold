@@ -12,7 +12,8 @@ import {
   setDoc,
   addDoc,
   updateDoc,
-  deleteDoc,
+  orderBy,
+  limit,
   serverTimestamp,
 } from 'firebase/firestore'
 // TODO: Add SDKs for Firebase products that you want to use
@@ -118,7 +119,7 @@ async function saveScore(documentId, name) {
   await addDoc(collection(db, 'scores'), {
     game: documentId,
     name: name,
-    score: end - start,
+    score: parseInt(end - start),
   })
   return { name: name, time: end - start }
 }
@@ -132,9 +133,10 @@ async function saveScore(documentId, name) {
 // }
 
 async function getScores() {
-  const q = query(collection(db, 'scores'))
+  const q = query(collection(db, 'scores'), orderBy('score'), limit(10))
   const querySnapshot = await getDocs(q)
   const documents = querySnapshot.docs.map((doc) => doc.data())
+  console.log('getScores: ', documents)
   const scores = documents.map((doc) => {
     return { name: doc.name, time: convertTime(doc.score) }
   })
