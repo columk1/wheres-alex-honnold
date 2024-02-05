@@ -31,6 +31,7 @@ const Magnifier = ({ src, width = '', magnifierWidth = 100, zoomLevel = 1.5 }) =
   const [isGameOver, setIsGameOver] = useState(false)
   // const [gameState, setGameState] = useState('')
   const [name, setName] = useState('')
+  const [score, setScore] = useState(null)
   const [loading, setLoading] = useState(true)
   const imageContainer = useRef(null)
 
@@ -59,6 +60,8 @@ const Magnifier = ({ src, width = '', magnifierWidth = 100, zoomLevel = 1.5 }) =
       setFoundItems([...foundItems, data.filter((item) => item.name === name)[0]])
       if (data.length - 1 === foundItems.length) {
         endTimer(id)
+        // const score = await endTimer(id)
+        // setScore(score)
         setIsGameOver(true)
       }
     } else {

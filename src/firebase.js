@@ -89,6 +89,7 @@ async function endTimer(documentId) {
   console.log('end at date: ', game.endAt.toDate())
   let start = new Date(game.startAt.toDate())
   let end = new Date(game.endAt.toDate())
+  return convertTime(end - start)
   // console.log('converted time: ', convertTime(end - start))
 }
 
@@ -104,50 +105,57 @@ function convertTime(input) {
   return duration
 }
 
-// async function saveScore(name, documentId) {
-//   const gameRef = doc(db, 'games', documentId)
-//   const gameSnapshot = await getDoc(gameRef)
-//   const game = gameSnapshot.data()
+async function saveScore(documentId, name) {
+  if (!name) return
 
-//   let start = new Date(game.startAt.toDate())
-//   let end = new Date(game.endAt.toDate())
+  const gameRef = doc(db, 'games', documentId)
+  const gameSnapshot = await getDoc(gameRef)
+  const game = gameSnapshot.data()
 
-//   await addDoc(db, 'scores', {
-//     game: documentId,
+  let start = new Date(game.startAt.toDate())
+  let end = new Date(game.endAt.toDate())
+
+  await addDoc(collection(db, 'scores'), {
+    game: documentId,
+    name: name,
+    score: end - start,
+  })
+  return { name: name, time: end - start }
+}
+
+// async function saveScore(documentId, name) {
+//   if (name === undefined) return
+
+//   await updateDoc(gameRef, {
 //     name: name,
-//     score: end - start,
 //   })
 // }
 
-async function saveScore(documentId, name) {
-  const gameRef = doc(db, 'games', documentId)
-  await updateDoc(gameRef, {
-    name: name,
-  })
-}
-
-// async function getScores() {
-//   const q = query(collection(db, 'scores'))
-//   const querySnapshot = await getDocs(q)
-//   const documents = querySnapshot.docs.map((doc) => doc.data())
-//   return documents
-// }
-
 async function getScores() {
-  const q = query(gamesRef, where('name', '!=', null))
+  const q = query(collection(db, 'scores'))
   const querySnapshot = await getDocs(q)
-  const games = querySnapshot.docs.map((doc) => doc.data())
-  console.log('games: ', games)
-  let scores = []
-  games.forEach((game) => {
-    let start = new Date(game.startAt.toDate())
-    let end = new Date(game.endAt.toDate())
-    scores.push({
-      name: game.name,
-      time: convertTime(end - start),
-    })
+  const documents = querySnapshot.docs.map((doc) => doc.data())
+  const scores = documents.map((doc) => {
+    return { name: doc.name, time: convertTime(doc.score) }
   })
   return scores
 }
+
+// async function getScores() {
+//   const q = query(gamesRef, where('name', '!=', null))
+//   const querySnapshot = await getDocs(q)
+//   const games = querySnapshot.docs.map((doc) => doc.data())
+//   console.log('games: ', games)
+//   let scores = []
+//   games.forEach((game) => {
+//     let start = new Date(game.startAt.toDate())
+//     let end = new Date(game.endAt.toDate())
+//     scores.push({
+//       name: game.name,
+//       time: convertTime(end - start),
+//     })
+//   })
+//   return scores
+// }
 
 export { createDocument, getDocuments, validateCoords, startTimer, endTimer, saveScore, getScores }
