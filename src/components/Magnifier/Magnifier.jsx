@@ -56,7 +56,7 @@ const Magnifier = ({ src, width = '', magnifierWidth = 100, zoomLevel = 1.5 }) =
     setShowPopover(false)
     const isValidSelection = await validateCoords(name, coords)
     if (isValidSelection) {
-      console.log('found item: ', name)
+      // console.log('found item: ', name)
       setFoundItems([...foundItems, data.filter((item) => item.name === name)[0]])
       if (data.length - 1 === foundItems.length) {
         // endTimer(id)
@@ -65,6 +65,7 @@ const Magnifier = ({ src, width = '', magnifierWidth = 100, zoomLevel = 1.5 }) =
         setIsGameOver(true)
       }
     } else {
+      // TODO: Add toast message
       console.log('Nope, try again')
     }
   }
@@ -77,7 +78,6 @@ const Magnifier = ({ src, width = '', magnifierWidth = 100, zoomLevel = 1.5 }) =
 
   return isGameOver && !isGameStarted ? (
     <>
-      {/* <Leaderboard scores={[{ name: name, time: '2m 23s' }]} /> */}
       <Leaderboard />
       <button onClick={restartGame}>Play Again</button>
     </>

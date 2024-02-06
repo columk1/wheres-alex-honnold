@@ -16,7 +16,6 @@ import {
   limit,
   serverTimestamp,
 } from 'firebase/firestore'
-// TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
@@ -37,19 +36,6 @@ const firebaseApp = initializeApp(firebaseConfig)
 const db = getFirestore(firebaseApp)
 
 const featuresRef = collection(db, 'features')
-const gamesRef = collection(db, 'games')
-
-const createDocument = (collectionName, document) => {
-  const collectionRef = collection(db, collectionName)
-  return addDoc(collectionRef, document)
-}
-
-async function getDocuments(collectionName) {
-  const collectionRef = collection(db, collectionName)
-  const collectionSnapshot = await getDocs(collectionRef)
-  const documents = collectionSnapshot.docs.map((doc) => doc.data())
-  return documents
-}
 
 async function validateCoords(featureName, coords) {
   const q = query(featuresRef, where('name', '==', featureName))
@@ -86,8 +72,8 @@ async function endTimer(documentId) {
   // console.log(gameRef)
   const updatedDoc = await getDoc(gameRef)
   const game = updatedDoc.data()
-  console.log('start at date: ', game.startAt.toDate())
-  console.log('end at date: ', game.endAt.toDate())
+  // console.log('start at date: ', game.startAt.toDate())
+  // console.log('end at date: ', game.endAt.toDate())
   let start = new Date(game.startAt.toDate())
   let end = new Date(game.endAt.toDate())
   return convertTime(end - start)
@@ -124,14 +110,6 @@ async function saveScore(documentId, name) {
   return { name: name, time: end - start }
 }
 
-// async function saveScore(documentId, name) {
-//   if (name === undefined) return
-
-//   await updateDoc(gameRef, {
-//     name: name,
-//   })
-// }
-
 async function getScores() {
   const q = query(collection(db, 'scores'), orderBy('score'), limit(10))
   const querySnapshot = await getDocs(q)
@@ -143,21 +121,4 @@ async function getScores() {
   return scores
 }
 
-// async function getScores() {
-//   const q = query(gamesRef, where('name', '!=', null))
-//   const querySnapshot = await getDocs(q)
-//   const games = querySnapshot.docs.map((doc) => doc.data())
-//   console.log('games: ', games)
-//   let scores = []
-//   games.forEach((game) => {
-//     let start = new Date(game.startAt.toDate())
-//     let end = new Date(game.endAt.toDate())
-//     scores.push({
-//       name: game.name,
-//       time: convertTime(end - start),
-//     })
-//   })
-//   return scores
-// }
-
-export { createDocument, getDocuments, validateCoords, startTimer, endTimer, saveScore, getScores }
+export { validateCoords, startTimer, endTimer, saveScore, getScores }
