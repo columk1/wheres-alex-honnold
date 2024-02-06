@@ -1,33 +1,37 @@
 import styles from './Leaderboard.module.css'
 import { useState, useEffect } from 'react'
 import { getScores } from '../../firebase'
+import Spinner from '../Spinner/Spinner'
 const Leaderboard = ({ currentScore }) => {
-  const [leaderboard, setLeaderboard] = useState([])
+  const [scores, setScores] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    if (scores) return
     const getLeaderboard = async () => {
-      const scores = await getScores()
-      setLeaderboard(scores)
+      const highScores = await getScores()
+      setScores(highScores)
     }
     getLeaderboard()
-  }, [])
-
-  // scores = [...scores, ...leaderboard]
-  // let scores = [currentScore, ...leaderboard]
-  let scores = [...leaderboard]
+    if (scores) setLoading(false)
+  }, [scores])
 
   return (
     <div className={styles.leaderboard}>
       <h1>Leaderboard</h1>
-      <ul>
-        {scores.map((score, i) => (
-          <li className={styles.listItem} key={score.name}>
-            <p>{i + 1}</p>
-            <p className={styles.name}>{score.name}</p>
-            <p className={styles.time}>{score.time}</p>
-          </li>
-        ))}
-      </ul>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <ul>
+          {scores.map((score, i) => (
+            <li className={styles.listItem} key={score.name}>
+              <p className={styles.position}>{i + 1}</p>
+              <p className={styles.name}>{score.name}</p>
+              <p className={styles.time}>{score.time}</p>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   )
 }

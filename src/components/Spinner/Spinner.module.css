@@ -1,0 +1,17 @@
+.spinner {
+  margin: 0 auto;
+  text-align: center;
+  & img {
+    width: 3rem;
+    animation: spin 2s linear infinite;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

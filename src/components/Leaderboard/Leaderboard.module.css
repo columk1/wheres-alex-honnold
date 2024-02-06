@@ -1,5 +1,6 @@
 .leaderboard {
   width: min(80vw, 868px);
+  margin-bottom: 2rem;
 }
 
 .listItem {
@@ -12,11 +13,15 @@
   }
   & p {
     margin: 0;
-    padding: 0.75rem 1.5rem;
+    padding: 0.5rem 1.5rem;
   }
   & p:not(:last-child) {
     border-right: 1px solid #555;
   }
+}
+
+.position {
+  width: 0.5rem;
 }
 
 .name {
