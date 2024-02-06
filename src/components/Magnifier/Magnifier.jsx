@@ -14,9 +14,9 @@ const data = [
   // { name: 'The Nipple', overlaySrc: './nipple.png' },
 ]
 
+// id used for each game in firebase. // ? Use context provider in refactor
 const id = uuidv4()
 
-// Todo: Zoom level may need to be a function of image size
 const Magnifier = ({ src, width = '', magnifierWidth = 100, zoomLevel = 1.5 }) => {
   const [[x, y], setXY] = useState([0, 0]) // cursor position in the image
   const [[imgWidth, imgHeight], setSize] = useState([0, 0])
@@ -59,22 +59,14 @@ const Magnifier = ({ src, width = '', magnifierWidth = 100, zoomLevel = 1.5 }) =
       console.log('found item: ', name)
       setFoundItems([...foundItems, data.filter((item) => item.name === name)[0]])
       if (data.length - 1 === foundItems.length) {
-        endTimer(id)
-        // const score = await endTimer(id)
-        // setScore(score)
+        // endTimer(id)
+        const score = await endTimer(id)
+        setScore(score)
         setIsGameOver(true)
       }
     } else {
       console.log('Nope, try again')
     }
-  }
-
-  const endGame = () => {
-    if (data.length === foundItems.length) {
-      endTimer(id)
-      return true
-    }
-    return false
   }
 
   const restartGame = () => {
@@ -110,11 +102,14 @@ const Magnifier = ({ src, width = '', magnifierWidth = 100, zoomLevel = 1.5 }) =
           setIsGameStarted(false)
           saveScore(id, name)
         }}
-        buttonText='Save score'
+        buttonText='Continue'
       >
         <h2>You did it!</h2>
-        <p>The tourists are leaving. It only took you {} minutes.</p>
-        <label htmlFor='name'>Enter your name below to see your score on the leaderboard</label>
+        <p>
+          The tourists are leaving. It only took you{' '}
+          <span style={{ fontSize: '1.5rem' }}>{score}</span>.
+        </p>
+        <label htmlFor='name'>Enter your name below to see your score on the leaderboard.</label>
         <input
           type='text'
           name='name'
