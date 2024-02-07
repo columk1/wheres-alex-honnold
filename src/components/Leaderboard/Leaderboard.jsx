@@ -7,7 +7,7 @@ const Leaderboard = ({ currentScore }) => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (scores) return
+    if (!loading) return
     const getLeaderboard = async () => {
       const highScores = await getScores()
       setScores(highScores)

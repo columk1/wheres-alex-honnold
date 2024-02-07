@@ -103,7 +103,7 @@ async function saveScore(documentId, name) {
   let end = new Date(game.endAt.toDate())
 
   await addDoc(collection(db, 'scores'), {
-    game: documentId,
+    gameId: documentId,
     name: name,
     score: parseInt(end - start),
   })
