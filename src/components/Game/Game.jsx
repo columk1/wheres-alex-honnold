@@ -144,11 +144,11 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
       <div
         className={styles.imgContainer}
         ref={imageContainer}
-        style={{
-          position: 'relative',
-          width: '90vw',
-          overflow: 'hidden',
-        }}
+        // style={{
+        //   position: 'relative',
+        //   width: '90vw',
+        //   overflow: 'hidden',
+        // }}
       >
         {/* Draggable Image */}
 

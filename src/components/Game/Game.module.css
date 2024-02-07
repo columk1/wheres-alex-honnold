@@ -1,9 +1,14 @@
 .imgContainer {
   position: relative;
-  max-width: 90vw;
-  max-height: 90vh;
+  width: calc(100vw - 4rem);
+  height: calc(100vh - 4rem);
   overflow: hidden;
   user-select: none;
+  border-radius: 0.5rem;
+  & img {
+    display: block;
+    border-radius: 0.5rem;
+  }
 
   /* overflow-x: scroll; */
   /* & img {
