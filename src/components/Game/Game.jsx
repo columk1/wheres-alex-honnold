@@ -1,5 +1,5 @@
 import styles from './Game.module.css'
-import { useState, useEffect, useRef, useLayoutEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { validateCoords, startTimer, endTimer, saveScore } from '../../firebase'
 import { v4 as uuidv4 } from 'uuid'
 import toast, { Toaster } from 'react-hot-toast'
@@ -37,23 +37,19 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
   const [foundItems, setFoundItems] = useState([])
   const [isGameStarted, setIsGameStarted] = useState(false)
   const [isGameOver, setIsGameOver] = useState(false)
+  //TODO: Combine state variables into gameState object
   // const [gameState, setGameState] = useState('')
   const [name, setName] = useState('')
   const [score, setScore] = useState(null)
   const [loading, setLoading] = useState(true)
   const imageContainer = useRef(null)
 
-  // let isMouseDown = false
-  // let isMouseOut = false
-  // let wasDragged = false
-
-  // const [dragStart, setDragStart] = { x: 0, y: 0 }
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
 
   const notifyMiss = () => toast.error('🦄 Nope. Not there.', { duration: 3000 })
   const notifyFound = () => toast.success(foundMessages[foundItems.length], { duration: 2000 })
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const container = imageContainer.current
     const img = container.firstChild
     if (!loading) {
@@ -68,16 +64,13 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
     const isValidSelection = await validateCoords(name, coords)
     if (isValidSelection) {
       notifyFound()
-      // console.log('found item: ', name)
       setFoundItems([...foundItems, data.filter((item) => item.name === name)[0]])
       if (data.length - 1 === foundItems.length) {
-        // endTimer(id)
         const score = await endTimer(id)
         setScore(score)
         setIsGameOver(true)
       }
     } else {
-      // TODO: Add toast message
       notifyMiss()
     }
   }
@@ -95,7 +88,17 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
     </>
   ) : (
     <>
-      <Toaster />
+      <Toaster
+        toastOptions={{
+          style: {
+            backgroundColor: '#333',
+            color: 'white',
+          },
+        }}
+      />
+
+      {/* Start Game Modal */}
+
       <Modal
         openModal={!isGameStarted}
         closeModal={() => {
@@ -109,6 +112,9 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
           it. Good luck!
         </p>
       </Modal>
+
+      {/* Game Over Modal */}
+
       <Modal
         openModal={isGameOver}
         closeModal={() => {
@@ -132,6 +138,9 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
           onChange={(e) => setName(e.target.value)}
         />
       </Modal>
+
+      {/* Image Container */}
+
       <div
         className={styles.imgContainer}
         ref={imageContainer}
@@ -141,6 +150,8 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
           overflow: 'hidden',
         }}
       >
+        {/* Draggable Image */}
+
         <img
           src={src}
           style={{ width, cursor: 'crosshair' }}
@@ -214,6 +225,9 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
           alt={'img'}
           draggable={false}
         />
+
+        {/* Popover Select Menu */}
+
         {showPopover && (
           <Popover
             location={popoverCoords}
@@ -228,6 +242,8 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
           />
         )}
 
+        {/* Overlay */}
+
         {foundItems.map((item) => (
           <img
             key={item.name}
@@ -237,6 +253,8 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
             draggable={false}
           />
         ))}
+
+        {/* Magnifier */}
 
         <div
           style={{
