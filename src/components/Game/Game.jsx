@@ -8,11 +8,11 @@ import Modal from '../Modal/Modal'
 import Leaderboard from '../Leaderboard/Leaderboard'
 
 const data = [
-  // { name: 'Alex Honnold', overlaySrc: './honnold.png' },
-  // { name: 'Boot Flake', overlaySrc: './boot-flake.png' },
+  { name: 'Alex Honnold', overlaySrc: './honnold.png' },
+  { name: 'Boot Flake', overlaySrc: './boot-flake.png' },
   { name: 'El Cap Spire', overlaySrc: './el-cap-spire.png' },
   { name: 'The Great Roof', overlaySrc: './great-roof.png' },
-  // { name: 'The Nipple', overlaySrc: './nipple.png' },
+  { name: 'The Nipple', overlaySrc: './nipple.png' },
 ]
 
 const foundMessages = [

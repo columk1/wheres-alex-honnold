@@ -7,7 +7,7 @@
   background-color: white;
   border-radius: 0.25rem;
   font-size: 0.75rem;
-  transform: translateX(-50%) translateY(-120%);
+  transform: translateX(-50%) translateY(calc(-100% - 2.75rem));
   &:after {
     content: '';
     position: absolute;
@@ -20,17 +20,6 @@
     border-top: 10px solid white;
     transform: translateX(-50%);
   }
-  /* &:after {
-    content: '';
-    position: absolute;
-    top: calc(105%);
-    left: 50%;
-    width: 60px;
-    height: 60px;
-    border: 5px solid white;
-    border-radius: 50%;
-    transform: translateX(-50%);
-  } */
 }
 
 .popoverUpper {
@@ -42,7 +31,7 @@
   background-color: white;
   border-radius: 0.25rem;
   font-size: 0.75rem;
-  transform: translateX(-50%) translateY(20%);
+  transform: translateX(-50%) translateY(2.75rem);
   &:after {
     content: '';
     position: absolute;
@@ -55,20 +44,9 @@
     border-top: 10px solid white;
     transform: translateX(-50%) rotate(180deg);
   }
-  /* &:after {
-    content: '';
-    position: absolute;
-    top: calc(105%);
-    left: 50%;
-    width: 60px;
-    height: 60px;
-    border: 5px solid white;
-    border-radius: 50%;
-    transform: translateX(-50%);
-  } */
 }
 
-.arrow {
+/* .arrow {
   content: '';
   position: absolute;
   top: 100%;
@@ -79,7 +57,7 @@
   border-right: 10px solid transparent;
   border-top: 10px solid white;
   transform: translateX(-50%);
-}
+} */
 
 .title {
   color: #213547;
