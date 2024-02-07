@@ -99,45 +99,49 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
 
       {/* Start Game Modal */}
 
-      <Modal
-        openModal={!isGameStarted}
-        closeModal={() => {
-          startTimer(id)
-          setIsGameStarted(true)
-        }}
-        buttonText='OK!'
-      >
-        <p>
-          Move the image by clicking and dragging. When you've found one of the features, click on
-          it. Good luck!
-        </p>
-      </Modal>
+      {!isGameStarted && (
+        <Modal
+          openModal={!isGameStarted}
+          closeModal={() => {
+            startTimer(id)
+            setIsGameStarted(true)
+          }}
+          buttonText='OK!'
+        >
+          <p>
+            Move the image by clicking and dragging. When you've found one of the features, click on
+            it. Good luck!
+          </p>
+        </Modal>
+      )}
 
       {/* Game Over Modal */}
 
-      <Modal
-        openModal={isGameOver}
-        closeModal={() => {
-          setIsGameStarted(false)
-          saveScore(id, name)
-        }}
-        buttonText='Continue'
-      >
-        <h2>You did it!</h2>
-        <p>
-          The tourists are leaving. It only took you{' '}
-          <span style={{ fontSize: '1.5rem' }}>{score}</span>.
-        </p>
-        <label htmlFor='name'>Enter your name below to see your score on the leaderboard.</label>
-        <input
-          type='text'
-          name='name'
-          placeholder='Sender McGee'
-          value={name}
-          maxLength={25}
-          onChange={(e) => setName(e.target.value)}
-        />
-      </Modal>
+      {isGameOver && (
+        <Modal
+          openModal={isGameOver}
+          closeModal={() => {
+            setIsGameStarted(false)
+            saveScore(id, name)
+          }}
+          buttonText='Continue'
+        >
+          <h2>You did it!</h2>
+          <p>
+            The tourists are leaving. It only took you{' '}
+            <span style={{ fontSize: '1.5rem' }}>{score}</span>.
+          </p>
+          <label htmlFor='name'>Enter your name below to see your score on the leaderboard.</label>
+          <input
+            type='text'
+            name='name'
+            placeholder='Sender McGee'
+            value={name}
+            maxLength={25}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </Modal>
+      )}
 
       {/* Image Container */}
 
