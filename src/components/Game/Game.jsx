@@ -2,6 +2,7 @@ import styles from './Game.module.css'
 import { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import { validateCoords, startTimer, endTimer, saveScore } from '../../firebase'
 import { v4 as uuidv4 } from 'uuid'
+import toast, { Toaster } from 'react-hot-toast'
 import Popover from '../Popover/Popover'
 import Modal from '../Modal/Modal'
 import Leaderboard from '../Leaderboard/Leaderboard'
@@ -14,8 +15,17 @@ const data = [
   // { name: 'The Nipple', overlaySrc: './nipple.png' },
 ]
 
+const foundMessages = [
+  '🦄 Found it! How do they get the rope up there?',
+  '🦄 Wow, so easy! Have you ever done any free climbing yourself?',
+  '🦄 Impressive! Do they really bring little mattresses up there to sleep on?',
+  '🦄 Incredible! Is that where the men in the movie got stuck?',
+]
+
 // id used for each game in firebase. // ? Use context provider in refactor
 const id = uuidv4()
+
+const notifyMiss = () => toast('🦄 Nope. Not there.', { duration: 3000 })
 
 const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLevel = 1.5 }) => {
   const [[x, y], setXY] = useState([0, 0]) // cursor position in the image
@@ -42,6 +52,8 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
   // const [dragStart, setDragStart] = { x: 0, y: 0 }
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
 
+  const notifyFound = () => toast(foundMessages[foundItems.length], { duration: 2000 })
+
   useLayoutEffect(() => {
     const container = imageContainer.current
     const img = container.firstChild
@@ -56,6 +68,7 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
     setShowPopover(false)
     const isValidSelection = await validateCoords(name, coords)
     if (isValidSelection) {
+      notifyFound()
       // console.log('found item: ', name)
       setFoundItems([...foundItems, data.filter((item) => item.name === name)[0]])
       if (data.length - 1 === foundItems.length) {
@@ -66,7 +79,7 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
       }
     } else {
       // TODO: Add toast message
-      console.log('Nope, try again')
+      notifyMiss()
     }
   }
 
@@ -83,6 +96,7 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
     </>
   ) : (
     <>
+      <Toaster />
       <Modal
         openModal={!isGameStarted}
         closeModal={() => {
