@@ -16,6 +16,6 @@ dialog {
   }
   &::backdrop {
     background-color: rgb(1, 1, 1, 0.1);
-    backdrop-filter: blur(1px);
+    backdrop-filter: blur(2px);
   }
 }
