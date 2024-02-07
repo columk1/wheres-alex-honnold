@@ -17,15 +17,13 @@ const data = [
 
 const foundMessages = [
   '🦄 Found it! How do they get the rope up there?',
-  '🦄 Wow, so easy! Have you ever done any free climbing yourself?',
+  '🦄 Wow, so high! Have you ever done free climbing?',
   '🦄 Impressive! Do they really bring little mattresses up there to sleep on?',
   '🦄 Incredible! Is that where the men in the movie got stuck?',
 ]
 
 // id used for each game in firebase. // ? Use context provider in refactor
 const id = uuidv4()
-
-const notifyMiss = () => toast('🦄 Nope. Not there.', { duration: 3000 })
 
 const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLevel = 1.5 }) => {
   const [[x, y], setXY] = useState([0, 0]) // cursor position in the image
@@ -52,7 +50,8 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
   // const [dragStart, setDragStart] = { x: 0, y: 0 }
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
 
-  const notifyFound = () => toast(foundMessages[foundItems.length], { duration: 2000 })
+  const notifyMiss = () => toast.error('🦄 Nope. Not there.', { duration: 3000 })
+  const notifyFound = () => toast.success(foundMessages[foundItems.length], { duration: 2000 })
 
   useLayoutEffect(() => {
     const container = imageContainer.current
