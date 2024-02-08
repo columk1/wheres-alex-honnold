@@ -36,6 +36,7 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
   const [isMouseOut, setIsMouseOut] = useState(false)
   const [wasDragged, setWasDragged] = useState(false)
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
+  const [touchStart, setTouchStart] = useState(null)
   // Selection State
   const [showPopover, setShowPopover] = useState(false)
   const [popoverCoords, setPopoverCoords] = useState({ x: 0, y: 0 })
@@ -186,24 +187,47 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
               x: imageContainer.current.scrollLeft + (e.clientX || e.targetTouches[0].clientX),
               y: imageContainer.current.scrollTop + (e.clientY || e.targetTouches[0].clientY),
             })
-            // setDragStart({ x: x, y: y })
+            if (e.touches) {
+              setTouchStart(e.touches[0])
+            }
           }}
-          onPointerUp={(e) => {
+          onTouchStart={(e) => {
+            setIsMouseDown(true)
+            setIsMouseOut(false)
+            setWasDragged(false)
+            // dragStart.x = imageContainer.current.scrollLeft + e.clientX
+            // dragStart.y = imageContainer.current.scrollTop + e.clientY
+            setDragStart({
+              x: imageContainer.current.scrollLeft + e.targetTouches[0].clientX,
+              y: imageContainer.current.scrollTop + e.targetTouches[0].clientY,
+            })
+            setTouchStart({ x: e.touches[0].clientX, y: e.touches[0].clientY })
+          }}
+          onMouseUp={() => {
+            setIsMouseDown(false)
+          }}
+          onTouchEnd={(e) => {
             setIsMouseDown(false)
 
             // If mouseMove or touchMove was not triggered, fire the click event
             if (!wasDragged) {
               const { top, left } = e.currentTarget.getBoundingClientRect()
+              // console.log(
+              //   'x: ',
+              //   touchStart.x - left - window.scrollX,
+              //   'y: ',
+              //   touchStart.y - top - window.scrollY
+              // )
               setPopoverCoords({
-                x: e.pageX - left - window.scrollX,
-                y: e.pageY - top - window.scrollY,
+                x: e.changedTouches[0].pageX - left - window.scrollX,
+                y: e.changedTouches[0].pageY - top - window.scrollY,
                 isUpperHalf: e.pageY < window.innerHeight / 2,
               })
               setShowPopover(!showPopover)
               setShowMagnifier(!showMagnifier)
             }
           }}
-          onPointerMove={(e) => {
+          onMouseMove={(e) => {
             if (isMouseDown && !isMouseOut) {
               imageContainer.current.scrollTo(
                 dragStart.x - (e.clientX || e.targetTouches[0].pageX),
@@ -214,17 +238,26 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
             // Get coords of top left of image
             const { top, left } = e.currentTarget.getBoundingClientRect()
             // Calculate cursor position in the image
-            const x = (e.pageX || e.target.touches[0].pageX) - left - window.scrollX
-            const y = (e.pageY || e.target.touches[0].pageY) - top - window.scrollY
+            const x = e.pageX - left - window.scrollX
+            const y = e.pageY - top - window.scrollY
             setXY([x, y])
           }}
           onTouchMove={(e) => {
             if (isMouseDown && !isMouseOut) {
               imageContainer.current.scrollTo(
-                dragStart.x - (e.clientX || e.targetTouches[0].pageX),
-                dragStart.y - (e.clientY || e.targetTouches[0].pageY)
+                dragStart.x - e.targetTouches[0].pageX,
+                dragStart.y - e.targetTouches[0].pageY
               )
-              setWasDragged(true)
+              // Calculate the distance between touchStart and touchEnd position
+              const touchEnd = e.changedTouches[0]
+              const dx = Math.pow(touchStart.x - touchEnd.pageX, 2)
+              const dy = Math.pow(touchStart.y - touchEnd.pageY, 2)
+
+              const distance = Math.round(Math.sqrt(dx + dy))
+              // console.log('distance: ', distance)
+              if (distance > 10) {
+                setWasDragged(true)
+              }
             }
             // Get coords of top left of image
             const { top, left } = e.currentTarget.getBoundingClientRect()
@@ -238,18 +271,17 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
             setIsMouseOut(true)
             setIsMouseDown(false)
           }}
-          // onClick={(e) => {
-          //   if (wasDragged) return
-          //   const { top, left } = e.currentTarget.getBoundingClientRect()
-          //   setPopoverCoords({
-          //     x: e.pageX - left - window.scrollX,
-          //     y: e.pageY - top - window.scrollY,
-          //     isUpperHalf: e.pageY < window.innerHeight / 2,
-          //   })
-          //   setShowPopover(!showPopover)
-          //   setShowMagnifier(!showMagnifier)
-          // }}
-
+          onClick={(e) => {
+            if (wasDragged) return
+            const { top, left } = e.currentTarget.getBoundingClientRect()
+            setPopoverCoords({
+              x: e.pageX - left - window.scrollX,
+              y: e.pageY - top - window.scrollY,
+              isUpperHalf: e.pageY < window.innerHeight / 2,
+            })
+            setShowPopover(!showPopover)
+            setShowMagnifier(!showMagnifier)
+          }}
           alt={'img'}
           draggable={false}
         />
