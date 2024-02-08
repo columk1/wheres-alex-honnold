@@ -68,6 +68,7 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
   }, [loading])
 
   const handleSelection = async (name, coords) => {
+    // console.log(coords)
     setShowPopover(false)
     const isValidSelection = await validateCoords(name, coords)
     if (isValidSelection) {
