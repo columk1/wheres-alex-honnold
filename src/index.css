@@ -25,7 +25,7 @@ body {
 
 a {
   font-weight: 500;
-  color: #64ff8b;
+  color: #64ffe3;
   text-decoration: inherit;
 }
 a:hover {
@@ -64,12 +64,12 @@ button {
 }
 button:hover,
 input:hover {
-  border-color: #64ff8b;
+  border-color: #64ffc6;
 }
 button:focus,
 button:focus-visible,
 input:focus {
-  outline: 2px auto #64ff8b;
+  outline: 2px auto #64ffc6;
 }
 
 ul,
