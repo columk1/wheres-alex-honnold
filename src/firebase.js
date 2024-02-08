@@ -83,6 +83,8 @@ function convertTime(input) {
   let m = Math.floor(seconds / 60) || ''
   let s = seconds - m * 60
 
+  if (m >= 60) return '> 1 hour'
+
   m = m ? m + 'm' : ''
 
   let duration = m + s + '.' + ms + 's'
