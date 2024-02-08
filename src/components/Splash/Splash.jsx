@@ -8,7 +8,7 @@ export default function Splash({ startGame }) {
   const [showLeaderboard, setShowLeaderboard] = useState(false)
 
   return showIntro ? (
-    <>
+    <div className={styles.container}>
       <h1 className={styles.title}>Greetings, fellow Aramark employee!</h1>
       <p className={styles.introduction}>
         You've spent most of the day cleaning up after a bachelor party at housekeeping. What a
@@ -28,14 +28,14 @@ export default function Splash({ startGame }) {
           Start Game
         </button>
       </div>
-    </>
+    </div>
   ) : showLeaderboard ? (
     <>
       <Leaderboard />
       <button onClick={() => setShowLeaderboard(false)}>Back</button>
     </>
   ) : (
-    <>
+    <div className={styles.container}>
       {/* <div>
         <img src='./honnold-logo.png' className={styles.logo} alt='Logo' />
       </div> */}
@@ -49,6 +49,6 @@ export default function Splash({ startGame }) {
           View Leaderboard
         </button>
       </div>
-    </>
+    </div>
   )
 }
