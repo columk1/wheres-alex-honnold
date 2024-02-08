@@ -21,6 +21,8 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  /* Disables pull-to-refresh but allows overscroll glow effects. */
+  overscroll-behavior-y: contain;
 }
 
 a {
