@@ -224,7 +224,9 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
                 isUpperHalf: e.pageY < window.innerHeight / 2,
               })
               setShowPopover(!showPopover)
-              setShowMagnifier(!showMagnifier)
+              // setShowMagnifier(!showMagnifier)
+            } else {
+              setShowPopover(false)
             }
           }}
           onMouseMove={(e) => {
