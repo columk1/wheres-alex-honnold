@@ -12,7 +12,19 @@
 
 [![Game Screenshot][game-screenshot]](https://wheres-honnold.netlify.app)
 
-The game is a React front-end and Firebase back-end. Securing the game would have been much easier using Express but I wanted to explore Firebase to get a sense of what can be done without a server.
+A simple SPA with a React front-end and Firebase back-end.
+
+## Notes
+
+This was mostly an exercise to see what can be done without a server. I used a few anti-patterns on the front-end as I was mostly focused on exploring Firebase. The main game component should really be split up and placed in a router.
+
+For security, the coordinates of the hidden objects are stored on the back-end. The score of each game is calculated using event-driven timestamps. These are set on the server using server time. There are rules in place which don't allow anyone to write a new score to the db unless there are a few parameters met, i.e. The relevant documents and timestamps must already exist.
+
+Further security improvements would include:
+
+- Moving the hidden object overlay images out of the bundle to a CDN
+- Moving some of the game logic to cloud functions
+- Implement a real time listener to improve the accuracy of the timer
 
 <!-- GETTING STARTED -->
 
@@ -57,4 +69,4 @@ nvm install 21.6.0
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[game-screenshot]: screenshots/game.png
+[game-screenshot]: screenshots/game.jpg
