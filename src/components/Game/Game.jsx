@@ -95,6 +95,8 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
     setIsGameOver(false)
   }
 
+  console.log(showMagnifier)
+
   // Render leaderboard if the game has ended
   return isGameOver && !isGameStarted ? (
     <>
@@ -179,7 +181,7 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
           onMouseEnter={(e) => {
             const { width, height } = e.currentTarget.getBoundingClientRect()
             setSize([width, height])
-            if (!showPopover && isTouchDevice()) setShowMagnifier(true)
+            if (!showPopover && !isTouchDevice()) setShowMagnifier(true)
           }}
           onPointerDown={(e) => {
             setIsMouseDown(true)
@@ -277,17 +279,17 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
             setIsMouseOut(true)
             setIsMouseDown(false)
           }}
-          onClick={(e) => {
-            if (wasDragged) return
-            const { top, left } = e.currentTarget.getBoundingClientRect()
-            setPopoverCoords({
-              x: e.pageX - left - window.scrollX,
-              y: e.pageY - top - window.scrollY,
-              isUpperHalf: e.pageY < window.innerHeight / 2,
-            })
-            setShowPopover(!showPopover)
-            setShowMagnifier(!showMagnifier)
-          }}
+          // onClick={(e) => {
+          //   if (wasDragged || isTouchDevice()) return
+          //   const { top, left } = e.currentTarget.getBoundingClientRect()
+          //   setPopoverCoords({
+          //     x: e.pageX - left - window.scrollX,
+          //     y: e.pageY - top - window.scrollY,
+          //     isUpperHalf: e.pageY < window.innerHeight / 2,
+          //   })
+          //   setShowPopover(!showPopover)
+          //   setShowMagnifier(!showMagnifier)
+          // }}
           alt={'img'}
           draggable={false}
         />
