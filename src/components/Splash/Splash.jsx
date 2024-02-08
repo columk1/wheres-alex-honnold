@@ -1,4 +1,4 @@
-import styles from './splash.module.css'
+import styles from './Splash.module.css'
 import Icons from '../Icons/Icons'
 import { useState } from 'react'
 import Leaderboard from '../Leaderboard/Leaderboard'
