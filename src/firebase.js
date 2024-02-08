@@ -42,9 +42,6 @@ async function validateCoords(featureName, coords) {
   const querySnapshot = await getDocs(q)
   const documents = querySnapshot.docs.map((doc) => doc.data())
   const feature = documents[0]
-  console.log('feature: ', feature)
-  console.log(coords)
-  console.log(feature.x, feature.y)
   if (
     coords.x > feature.x - 20 &&
     coords.x < feature.x + 20 &&
@@ -114,7 +111,6 @@ async function getScores() {
   const q = query(collection(db, 'scores'), orderBy('score'), limit(10))
   const querySnapshot = await getDocs(q)
   const documents = querySnapshot.docs.map((doc) => doc.data())
-  console.log('getScores: ', documents)
   const scores = documents.map((doc) => {
     return { name: doc.name, time: convertTime(doc.score) }
   })
