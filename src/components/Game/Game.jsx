@@ -26,6 +26,10 @@ const foundMessages = [
 // id used for each game in firebase. // ? Use context provider in refactor
 const id = uuidv4()
 
+function isTouchDevice() {
+  return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0
+}
+
 const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLevel = 1.5 }) => {
   // Magnifier State
   const [[x, y], setXY] = useState([0, 0]) // cursor position in the image
@@ -175,7 +179,7 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
           onMouseEnter={(e) => {
             const { width, height } = e.currentTarget.getBoundingClientRect()
             setSize([width, height])
-            if (!showPopover) setShowMagnifier(true)
+            if (!showPopover && isTouchDevice()) setShowMagnifier(true)
           }}
           onPointerDown={(e) => {
             setIsMouseDown(true)
