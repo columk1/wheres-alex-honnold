@@ -15,8 +15,8 @@ export default function Splash({ startGame }) {
         relief to be back at the meadow!
       </p>
       <p className={styles.introduction}>
-        Unfortunately, a group of tourists are approaching. Guess what? They want to know where Alex
-        Honnold is. You won't be able to relax until they leave.
+        Unfortunately, a group of tourists are approaching. Guess what? They want you to point out
+        where Alex Honnold is, among other things. You won't be able to relax until they leave...
       </p>
       <p className={styles.directions}>
         Your task is to find our hero Alex and locate each the following features in as little time
