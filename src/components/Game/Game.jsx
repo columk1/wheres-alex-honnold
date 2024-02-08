@@ -184,6 +184,7 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
             if (!showPopover && !isTouchDevice()) setShowMagnifier(true)
           }}
           onPointerDown={(e) => {
+            if (isTouchDevice()) return
             setIsMouseDown(true)
             setIsMouseOut(false)
             setWasDragged(false)
@@ -198,6 +199,7 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
             }
           }}
           onTouchStart={(e) => {
+            setShowPopover(false)
             setIsMouseDown(true)
             setIsMouseOut(false)
             setWasDragged(false)
@@ -218,12 +220,6 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
             // If mouseMove or touchMove was not triggered, fire the click event
             if (!wasDragged) {
               const { top, left } = e.currentTarget.getBoundingClientRect()
-              // console.log(
-              //   'x: ',
-              //   touchStart.x - left - window.scrollX,
-              //   'y: ',
-              //   touchStart.y - top - window.scrollY
-              // )
               setPopoverCoords({
                 x: e.changedTouches[0].pageX - left - window.scrollX,
                 y: e.changedTouches[0].pageY - top - window.scrollY,
@@ -231,11 +227,10 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
               })
               setShowPopover(!showPopover)
               // setShowMagnifier(!showMagnifier)
-            } else {
-              setShowPopover(false)
             }
           }}
           onMouseMove={(e) => {
+            if (isTouchDevice()) return
             if (isMouseDown && !isMouseOut) {
               imageContainer.current.scrollTo(
                 dragStart.x - (e.clientX || e.targetTouches[0].pageX),
