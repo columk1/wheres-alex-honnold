@@ -188,8 +188,20 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
             })
             // setDragStart({ x: x, y: y })
           }}
-          onPointerUp={() => {
+          onPointerUp={(e) => {
             setIsMouseDown(false)
+
+            // If mouseMove or touchMove was not triggered, fire the click event
+            if (!wasDragged) {
+              const { top, left } = e.currentTarget.getBoundingClientRect()
+              setPopoverCoords({
+                x: e.pageX - left - window.scrollX,
+                y: e.pageY - top - window.scrollY,
+                isUpperHalf: e.pageY < window.innerHeight / 2,
+              })
+              setShowPopover(!showPopover)
+              setShowMagnifier(!showMagnifier)
+            }
           }}
           onPointerMove={(e) => {
             if (isMouseDown && !isMouseOut) {
@@ -226,17 +238,18 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
             setIsMouseOut(true)
             setIsMouseDown(false)
           }}
-          onClick={(e) => {
-            if (wasDragged) return
-            const { top, left } = e.currentTarget.getBoundingClientRect()
-            setPopoverCoords({
-              x: e.pageX - left - window.scrollX,
-              y: e.pageY - top - window.scrollY,
-              isUpperHalf: e.pageY < window.innerHeight / 2,
-            })
-            setShowPopover(!showPopover)
-            setShowMagnifier(!showMagnifier)
-          }}
+          // onClick={(e) => {
+          //   if (wasDragged) return
+          //   const { top, left } = e.currentTarget.getBoundingClientRect()
+          //   setPopoverCoords({
+          //     x: e.pageX - left - window.scrollX,
+          //     y: e.pageY - top - window.scrollY,
+          //     isUpperHalf: e.pageY < window.innerHeight / 2,
+          //   })
+          //   setShowPopover(!showPopover)
+          //   setShowMagnifier(!showMagnifier)
+          // }}
+
           alt={'img'}
           draggable={false}
         />
