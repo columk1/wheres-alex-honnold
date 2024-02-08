@@ -4,6 +4,7 @@ const Icons = ({ height }) => {
     <div className={styles.icons}>
       <div className={styles.iconGroup}>
         <svg
+          className={styles.icon}
           id='boot-flake'
           data-name='Boot Flake'
           xmlns='http://www.w3.org/2000/svg'
@@ -30,6 +31,7 @@ const Icons = ({ height }) => {
 
       <div className={styles.iconGroup}>
         <svg
+          className={styles.icon}
           id='el-cap-spire'
           data-name='El Cap Spire'
           xmlns='http://www.w3.org/2000/svg'
@@ -56,6 +58,7 @@ const Icons = ({ height }) => {
 
       <div className={styles.iconGroup}>
         <svg
+          className={styles.icon}
           id='great-roof'
           data-name='Great Roof'
           xmlns='http://www.w3.org/2000/svg'
@@ -82,6 +85,7 @@ const Icons = ({ height }) => {
 
       <div className={styles.iconGroup}>
         <svg
+          className={styles.icon}
           id='the-nipple'
           data-name='The Nipple'
           xmlns='http://www.w3.org/2000/svg'
