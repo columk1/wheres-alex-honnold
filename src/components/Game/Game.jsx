@@ -26,29 +26,36 @@ const foundMessages = [
 const id = uuidv4()
 
 const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLevel = 1.5 }) => {
+  // Magnifier State
   const [[x, y], setXY] = useState([0, 0]) // cursor position in the image
   const [[imgWidth, imgHeight], setSize] = useState([0, 0])
   const [showMagnifier, setShowMagnifier] = useState(false)
+  // Drag/Scroll State
   const [isMouseDown, setIsMouseDown] = useState(false)
   const [isMouseOut, setIsMouseOut] = useState(false)
   const [wasDragged, setWasDragged] = useState(false)
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
+  // Selection State
   const [showPopover, setShowPopover] = useState(false)
   const [popoverCoords, setPopoverCoords] = useState({ x: 0, y: 0 })
+  // Game State
+  //TODO: Combine state variables into gameState object
+  // const [gameState, setGameState] = useState({})
   const [foundItems, setFoundItems] = useState([])
   const [isGameStarted, setIsGameStarted] = useState(false)
   const [isGameOver, setIsGameOver] = useState(false)
-  //TODO: Combine state variables into gameState object
-  // const [gameState, setGameState] = useState('')
   const [name, setName] = useState('')
   const [score, setScore] = useState(null)
+
   const [loading, setLoading] = useState(true)
+
   const imageContainer = useRef(null)
 
-  const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
-
+  // Toast messages
   const notifyMiss = () => toast.error('🦄 Nope. Not there.', { duration: 3000 })
   const notifyFound = () => toast.success(foundMessages[foundItems.length], { duration: 2000 })
 
+  // Scroll to bottom centre of image when component mounts
   useEffect(() => {
     const container = imageContainer.current
     const img = container.firstChild
@@ -81,12 +88,14 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
     setIsGameOver(false)
   }
 
+  // Render leaderboard if the game has ended
   return isGameOver && !isGameStarted ? (
     <>
       <Leaderboard />
       <button onClick={restartGame}>Play Again</button>
     </>
   ) : (
+    // Main render block
     <>
       <Toaster
         toastOptions={{
@@ -235,13 +244,9 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
         {showPopover && (
           <Popover
             location={popoverCoords}
-            list={[
-              'Alex Honnold',
-              'Boot Flake',
-              'El Cap Spire',
-              'The Great Roof',
-              'The Nipple',
-            ].filter((item) => !foundItems.some((foundItem) => foundItem.name === item))}
+            list={data
+              .map((item) => item.name)
+              .filter((item) => !foundItems.some((foundItem) => foundItem.name === item))}
             handleSelection={handleSelection}
           />
         )}
