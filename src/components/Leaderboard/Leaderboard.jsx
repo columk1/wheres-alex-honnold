@@ -30,6 +30,7 @@ const Leaderboard = ({ currentScore }) => {
               <p className={styles.time}>{score.time}</p>
             </li>
           ))}
+          {scores.length === 0 && <p>No scores yet</p>}
         </ul>
       )}
     </div>

@@ -3,7 +3,16 @@
 }
 
 .startBtn {
-  padding: 2em;
+  padding: 1.5rem;
+}
+
+.menuBtns {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: max-content;
+  margin: 0 auto;
+  padding: 1.5em;
 }
 
 .introduction {

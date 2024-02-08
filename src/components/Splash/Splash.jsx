@@ -1,9 +1,12 @@
 import styles from './splash.module.css'
 import Icons from '../Icons/Icons'
 import { useState } from 'react'
+import Leaderboard from '../Leaderboard/Leaderboard'
 
 export default function Splash({ startGame }) {
   const [showIntro, setShowIntro] = useState(false)
+  const [showLeaderboard, setShowLeaderboard] = useState(false)
+
   return showIntro ? (
     <>
       <h1 className={styles.title}>Greetings, fellow Aramark employee!</h1>
@@ -26,18 +29,26 @@ export default function Splash({ startGame }) {
         </button>
       </div>
     </>
+  ) : showLeaderboard ? (
+    <>
+      <Leaderboard />
+      <button onClick={() => setShowLeaderboard(false)}>Back</button>
+    </>
   ) : (
     <>
       {/* <div>
         <img src='./honnold-logo.png' className={styles.logo} alt='Logo' />
       </div> */}
       <h1 className={styles.title}>Where's Alex Honnold?</h1>
-      <div className={styles.startBtn}>
+      <p className={styles.description}>Find our hero on el Cap</p>
+      <div className={styles.menuBtns}>
         <button className={styles.btn} onClick={() => setShowIntro(true)}>
           Start
         </button>
+        <button className={styles.btn} onClick={() => setShowLeaderboard(true)}>
+          View Leaderboard
+        </button>
       </div>
-      <p className={styles.description}>Find our hero on el Cap</p>
     </>
   )
 }

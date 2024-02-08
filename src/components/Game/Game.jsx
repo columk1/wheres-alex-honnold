@@ -19,7 +19,8 @@ const foundMessages = [
   '🦄 Found it! How do they get the rope up there?',
   '🦄 Wow, so high! Have you ever done free climbing?',
   '🦄 Impressive! Do they really bring little mattresses up there to sleep on?',
-  '🦄 Incredible! Is that where the men in the movie got stuck?',
+  '🦄 Incredible! Is that where those men in the movie got stuck?',
+  '🦄 Imagine that...',
 ]
 
 // id used for each game in firebase. // ? Use context provider in refactor
@@ -53,7 +54,7 @@ const Game = ({ src = 'elcap-main.jpg', width = '', magnifierWidth = 100, zoomLe
 
   // Toast messages
   const notifyMiss = () => toast.error('🦄 Nope. Not there.', { duration: 3000 })
-  const notifyFound = () => toast.success(foundMessages[foundItems.length], { duration: 2000 })
+  const notifyFound = () => toast.success(foundMessages[foundItems.length], { duration: 4000 })
 
   // Scroll to bottom centre of image when component mounts
   useEffect(() => {

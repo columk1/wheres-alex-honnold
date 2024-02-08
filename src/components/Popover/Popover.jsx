@@ -12,7 +12,7 @@ const Popover = ({ location, list, handleSelection }) => {
         className={isUpperHalf ? styles.popoverUpper : styles.popover}
         style={{ top: y, left: x }}
       >
-        <p className={styles.title}>Items</p>
+        <p className={styles.title}></p>
         <div className={styles.list}>
           {list.map((item) => (
             <button key={item} onClick={() => handleSelection(item, { x, y })}>
