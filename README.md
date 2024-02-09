@@ -16,7 +16,7 @@ A simple SPA with a React front-end and Firebase back-end.
 
 ## Notes
 
-This was mostly an exercise to see what can be done without a server. I used a few anti-patterns on the front-end as I was mostly focused on exploring Firebase. The main game component should really be split up and placed in a router.
+This was mostly an exercise to see what can be done without a server. I used a few anti-patterns on the front-end as I was mostly focused on exploring Firebase. The main game component should really be split up and placed in a router. The mouse and touch events are all inline and should be extracted and organized.
 
 For security, the coordinates of the hidden objects are stored on the back-end. The score of each game is calculated using event-driven timestamps. These are set on the server using server time. There are rules in place which don't allow anyone to write a new score to the db unless there are a few parameters met, i.e. The relevant documents and timestamps must already exist.
 
