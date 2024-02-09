@@ -16,11 +16,11 @@ const data = [
 ]
 
 const foundMessages = [
-  '🦄 Found it! How do they get the rope up there?',
-  '🦄 Wow, so high! Have you ever done free climbing?',
-  '🦄 Impressive! Do they really bring little mattresses up there to sleep on?',
-  '🦄 Incredible! Is that where those men in the movie got stuck?',
-  '🦄 Imagine that...',
+  '👨🏻‍🦳 Found it! How do they get the rope up there?',
+  '👩🏽 Wow, so high! Have you ever done free climbing?',
+  '👵🏻 Impressive! Do they really bring little mattresses up there to sleep on?',
+  '👴🏼 Incredible! Is that where those men in the movie got stuck?',
+  '🧔🏻‍♂️ Imagine that...',
 ]
 
 // id used for each game in firebase. // ? Use context provider in refactor

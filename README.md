@@ -12,25 +12,25 @@
 
 [![Game Screenshot][game-screenshot]](https://wheres-honnold.netlify.app)
 
-A simple SPA with a React front-end and Firebase back-end.
+A simple SPA with a React front-end and Firebase back-end. Players are timed as they search a draggable high-resolution image of El Capitain for a number of famous rock features. A leaderboard displays the top 10 scores. Desktop users will have a magnifier as their cursor.
 
 ## Notes
 
 This was mostly an exercise to see what can be done without a server. I used a few anti-patterns on the front-end as I was mostly focused on exploring Firebase. The main game component should really be split up and placed in a router. The mouse and touch events are all inline and should be extracted and organized.
 
-For security, the coordinates of the hidden objects are stored on the back-end. The score of each game is calculated using event-driven timestamps. These are set on the server using server time. There are rules in place which don't allow anyone to write a new score to the db unless there are a few parameters met, i.e. The relevant documents and timestamps must already exist.
+For security, the coordinates of the hidden objects are stored on the back-end. The score of each game is calculated using event-driven timestamps. These are set on the server using server time. There are rules in place which don't allow anyone to write a new score to the db unless there are a few parameters met, i.e. the relevant documents and timestamps must already exist.
 
-Further security improvements would include:
+Further security improvements could include:
 
-- Moving the hidden object overlay images out of the bundle to a CDN
-- Moving some of the game logic to cloud functions
+- Move the hidden object overlay images out of the bundle to a CDN
+- Move some of the game logic to cloud functions
 - Implement a real time listener to improve the accuracy of the timer
 
 <!-- GETTING STARTED -->
 
 ## Getting Started
 
-To get a local copy up and running follow these simple example steps.
+To get a local copy up and running follow these steps.
 
 ### Prerequisites
 
@@ -44,7 +44,7 @@ nvm install 21.6.0
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/columk1/portfolio.git
+   git clone https://github.com/columk1/wheres-alex-honnold.git
    ```
 2. Install NPM packages
    ```sh
